@@ -150,8 +150,7 @@ const SelectComponent = (props: SelectProps) => {
           onChange={(newValue) => {
             handleChange(newValue.target.value)
             if (onChange) {
-              //@ts-ignore
-              onChange(newValue)
+              onChange(newValue.target.value)
             }
             return newValue
           }}

@@ -1,5 +1,8 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
+export type Loading = 'NotLoad' | 'Loaded' | 'Loading' | 'Error'
+export type DialogState = 'add' | 'edit' | 'none'
+
 export type CommonState = {
   isLoading?: boolean
   isSidebar?: boolean

@@ -5,7 +5,6 @@ import MuiFormControl from '@mui/material/FormControl'
 
 const StyledMuiFormControl = styled(MuiFormControl)`
   justify-items: flex-start;
-  color: black;
   align-items: center;
 
   & .MuiFormControl-root .MuiInputBase-root {

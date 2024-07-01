@@ -1,14 +1,13 @@
-import React from 'react'
-import { useEffect } from 'react'
 import { Control, Controller } from 'react-hook-form'
 import { styled } from 'styled-components'
 import Editor from 'suneditor-react'
 import { SunEditorReactProps } from 'suneditor-react/dist/types/SunEditorReactProps'
-import 'suneditor/dist/css/suneditor.min.css'
+import 'suneditor/dist/css/suneditor.min.css' // Import SunEditor CSS
 
 export interface MyEditorProps extends SunEditorReactProps {
   name: string
   control?: Control
+  height?: string
 }
 
 const options = {
@@ -29,27 +28,28 @@ const options = {
   defaultTag: 'div',
   showPathLabel: false,
 }
-const EditorContainer = styled.div`
+const EditorContainer = styled.div<{ $height: string }>`
   display: flex;
   flex-direction: column;
+
+  .se-container {
+    display: flex;
+    flex-direction: column;
+    height: ${({ $height }) => `${$height}`};
+    .se-toolbar {
+      flex: 0;
+    }
+  }
 `
 
-const SunEditorField = (props: MyEditorProps) => {
-  const { control, name, onChange, ...rest } = props
-  const [sunEditor, setSuneditor] = React.useState<any>(null)
-  const editableElement = document.querySelector('.sun-editor-editable')
-
-  useEffect(() => {
-    if (sunEditor) {
-      console.log(editableElement)
-    }
-  }, [sunEditor])
+const SunEditor = (props: MyEditorProps) => {
+  const { control, name, onChange, height = '400px', ...rest } = props
 
   if (control) {
     return (
       <Controller
         render={({ field: { onChange: handleChangeRender, value } }) => (
-          <EditorContainer>
+          <EditorContainer $height={height}>
             <Editor
               {...rest}
               lang='en'
@@ -72,16 +72,10 @@ const SunEditorField = (props: MyEditorProps) => {
   }
 
   return (
-    <EditorContainer>
-      <Editor
-        getSunEditorInstance={setSuneditor}
-        {...rest}
-        lang='en'
-        onChange={onChange}
-        setOptions={options}
-      />
+    <EditorContainer $height={height}>
+      <Editor {...rest} lang='en' onChange={onChange} setOptions={options} />
     </EditorContainer>
   )
 }
 
-export default SunEditorField
+export default SunEditor

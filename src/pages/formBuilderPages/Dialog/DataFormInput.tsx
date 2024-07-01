@@ -288,7 +288,7 @@ const DataFormInput: React.FC<FormProps> = (props: FormProps) => {
   })
 
   const { handleSubmit, control, watch, getValues, formState } = formMethods
-  const { isDirty } = formState
+  const { isDirty, errors } = formState
 
   const referenceCodeName = watch('referenceCodeName')
   const typeForm = watch('type')
@@ -323,9 +323,10 @@ const DataFormInput: React.FC<FormProps> = (props: FormProps) => {
       ...data,
       required: Boolean(data?.required),
     }
+    console.log(savedData)
     onSubmit(savedData)
   })
-
+  console.log(errors)
   return (
     <>
       <DialogContent>
@@ -345,29 +346,32 @@ const DataFormInput: React.FC<FormProps> = (props: FormProps) => {
                 Add Option
               </Button>
             </Typography>
-            {fields.map((item, index) => (
-              <Box key={item.id} sx={{ mt: 2, display: 'flex' }}>
-                <TextInput
-                  id={`${index}-input-field-value`}
-                  label='Value'
-                  fullWidth
-                  name={`options.${index}.value`}
-                  control={control}
-                  maxLength={30}
-                />
-                <TextInput
-                  id={`${index}-input-field-label`}
-                  label='Label'
-                  fullWidth
-                  name={`options.${index}.label`}
-                  control={control}
-                  maxLength={30}
-                />
-                <IconButton type='button' onClick={() => remove(index)} sx={{ mt: 1 }}>
-                  <DeleteForeverOutlined />
-                </IconButton>
-              </Box>
-            ))}
+            {fields.map((item, index) => {
+              console.log(item)
+              return (
+                <Box key={item.id} sx={{ mt: 2, display: 'flex' }}>
+                  <TextInput
+                    id={`${index}-input-field-value`}
+                    label='Value'
+                    fullWidth
+                    name={`options.${index}.value`}
+                    control={control}
+                    maxLength={30}
+                  />
+                  <TextInput
+                    id={`${index}-input-field-label`}
+                    label='Label'
+                    fullWidth
+                    name={`options.${index}.label`}
+                    control={control}
+                    maxLength={30}
+                  />
+                  <IconButton type='button' onClick={() => remove(index)} sx={{ mt: 1 }}>
+                    <DeleteForeverOutlined />
+                  </IconButton>
+                </Box>
+              )
+            })}
           </>
         )}
       </DialogContent>
