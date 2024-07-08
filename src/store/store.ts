@@ -13,6 +13,7 @@ import {
 import commonStore from './commonStore/CommonStore'
 import formBuilderStore from './formBuilderPageStore/FormBuilderStore'
 import taskChecklistStore from './taskChecklistStore/TaskChecklistStore'
+import projectSlice from './projectStore/ProjectStore'
 
 const rootPersistConfig = {
   key: 'root',
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   commonStore: commonStore.reducer,
   formBuilderStore: formBuilderStore.reducer,
   taskChecklistStore: taskChecklistStore.reducer,
+  projectStore: projectSlice.reducer,
 })
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer)
