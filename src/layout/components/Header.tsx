@@ -10,6 +10,8 @@ import { Person } from '@mui/icons-material'
 import ViewHeadlineIcon from '@mui/icons-material/ViewHeadline'
 import { loggingOut } from '@app/api/axios'
 import { postLogout } from '@app/api/login/login-api'
+import { useSelector } from 'react-redux'
+import { RootState } from '@app/store/store'
 
 type HeaderProps = {
   displaySidebar: boolean
@@ -23,11 +25,13 @@ const StyledMenu = styled(MenuItem)`
 const Header = (props: HeaderProps) => {
   const { displaySidebar, handleChangeSideStatus } = props
   const { removeUser } = useContext(AppContext)
+  const { currentProjectId } = useSelector((state: RootState) => state.projectStore)
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [title, setTitle] = React.useState<string>(
-    linkItems.filter((item) => location.pathname.split('/')[1] === item?.link.replace('/', ''))[0]
-      ?.text,
+    linkItems(Boolean(currentProjectId)).filter(
+      (item) => location.pathname.split('/')[1] === item?.link.replace('/', ''),
+    )[0]?.text,
   )
 
   const displayMenu = Boolean(anchorEl)

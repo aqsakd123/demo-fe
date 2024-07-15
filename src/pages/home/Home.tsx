@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 import Type3Item from './CodeBlockTypeComponent/Type3Item'
 import { v4 as uuidv4 } from 'uuid'
 import styled from 'styled-components'
-import { DragDropContext, Draggable, DropResult, ResponderProvided } from 'react-beautiful-dnd'
+import { DragDropContext, Draggable, DropResult } from 'react-beautiful-dnd'
 import { StrictModeDroppable } from '@app/components/common/StrictModeDroppable/StrictModeDroppable'
 
 export enum POSITION {
@@ -506,8 +506,14 @@ const Home: React.FC = () => {
     })
   }
 
-  const onDragEnd = (result: DropResult, provided: ResponderProvided) => {
-    const { source, destination } = result
+  const onDragEnd = (
+    result: DropResult,
+    // provided: ResponderProvided
+  ) => {
+    const {
+      // source,
+      destination,
+    } = result
 
     if (!destination) return
     // TODO:

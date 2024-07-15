@@ -121,6 +121,7 @@ const CheckboxInner: React.FC<CheckboxType> = (props: CheckboxType) => {
                     }
                     return newChecked
                   }}
+                  checked={value}
                 />
               )}
               control={control}

@@ -30,6 +30,9 @@ interface Functional {
 interface ProjectState {
   codeCommonList: Common[]
   functionalList: Functional[]
+  currentProjectId?: string
+  currentLanguage?: string
+  currentLanguageList?: any
 }
 
 const initialState: ProjectState = {
@@ -54,9 +57,15 @@ const initialState: ProjectState = {
     { id: '28p3u81u32480fjdhjsdhjhdsf', name: 'F3', params: [] },
     { id: '38p3u81u32480fjdhjsdhjhdsf', name: 'F4', params: [] },
   ],
+  currentProjectId: undefined,
+  currentLanguage: 'java',
+  currentLanguageList: {
+    frontend: undefined,
+    backend: undefined,
+  },
 }
 
-const projectSlice = createSlice({
+const projectStore = createSlice({
   name: 'project',
   initialState,
   reducers: {
@@ -66,7 +75,16 @@ const projectSlice = createSlice({
     changeFunctionalList: (state, action: PayloadAction<Functional[]>) => {
       state.functionalList = action.payload
     },
+    changeCurrentProjectId: (state, action: PayloadAction<string | undefined>) => {
+      state.currentProjectId = action.payload
+    },
+    changeCurrentLanguageList: (
+      state,
+      action: PayloadAction<{ frontend?: string; backend?: string }>,
+    ) => {
+      state.currentLanguageList = action.payload
+    },
   },
 })
 
-export default projectSlice
+export default projectStore
