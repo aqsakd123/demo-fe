@@ -8,6 +8,7 @@ import { useFontAwesomeIconPack } from './hooks/useCollectIconPack'
 
 export type ReactIconPickerProps = {
   value?: string
+  disabled?: boolean
   id: string
   onChange?: (value: string) => void
 }
@@ -15,6 +16,7 @@ export type ReactIconPickerProps = {
 const IconPickerInner: React.FC<ReactIconPickerProps> = ({
   value,
   onChange,
+  disabled,
   id,
 }: ReactIconPickerProps) => {
   const [searchText, setSearchText] = useState('')
@@ -36,6 +38,7 @@ const IconPickerInner: React.FC<ReactIconPickerProps> = ({
         fullWidth
         placeholder='Select an icon'
         value={value}
+        disabled={disabled}
         InputProps={{
           readOnly: true,
           endAdornment: (
@@ -76,6 +79,7 @@ const IconPickerInner: React.FC<ReactIconPickerProps> = ({
             <TextField
               fullWidth
               placeholder='Search'
+              disabled={disabled}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position='start'>
@@ -96,7 +100,11 @@ const IconPickerInner: React.FC<ReactIconPickerProps> = ({
                 <button
                   className={`iconPicker__iconItem ${icon.iconName === value ? 'selected' : ''}`}
                   title={icon.iconName}
-                  onClick={() => onChange?.(icon.iconName)}
+                  onClick={() => {
+                    if (!disabled) {
+                      onChange?.(icon.iconName)
+                    }
+                  }}
                 >
                   <FontAwesomeIcon icon={icon} />
                 </button>

@@ -12,6 +12,10 @@ import { loggingOut } from '@app/api/axios'
 import { postLogout } from '@app/api/login/login-api'
 import { useSelector } from 'react-redux'
 import { RootState } from '@app/store/store'
+import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined'
+import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined'
+import { useDispatch } from 'react-redux'
+import commonStore from '@app/store/commonStore/CommonStore'
 
 type HeaderProps = {
   displaySidebar: boolean
@@ -24,14 +28,16 @@ const StyledMenu = styled(MenuItem)`
 
 const Header = (props: HeaderProps) => {
   const { displaySidebar, handleChangeSideStatus } = props
+  const dispatch = useDispatch()
+
+  const { darkMode } = useSelector((state: RootState) => state.commonStore)
+
   const { removeUser } = useContext(AppContext)
-  const { currentProjectId } = useSelector((state: RootState) => state.projectStore)
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [title, setTitle] = React.useState<string>(
-    linkItems(Boolean(currentProjectId)).filter(
-      (item) => location.pathname.split('/')[1] === item?.link.replace('/', ''),
-    )[0]?.text,
+    linkItems.filter((item) => location.pathname.split('/')[1] === item?.link.replace('/', ''))[0]
+      ?.text,
   )
 
   const displayMenu = Boolean(anchorEl)
@@ -62,7 +68,6 @@ const Header = (props: HeaderProps) => {
         transition: 'all 0.2s ease',
         height: '64px',
         backgroundColor: '#111827',
-        borderBottom: '1px solid white',
       }}
     >
       <Box style={{ display: 'flex', flexDirection: 'row-reverse', alignItems: 'center' }}>
@@ -79,8 +84,15 @@ const Header = (props: HeaderProps) => {
           <span className='header-title'>{title || 'Demo-FE'}</span>
         </div>
       </Box>
+
       <div className='header-right'>
-        <IconButton onClick={handleClick} style={{ color: '#94a3b8' }}>
+        <IconButton
+          onClick={() => dispatch(commonStore.actions.setDarkmode(!darkMode))}
+          sx={{ color: 'white' }}
+        >
+          {darkMode ? <DarkModeOutlinedIcon /> : <LightModeOutlinedIcon />}
+        </IconButton>
+        <IconButton onClick={handleClick} sx={{ color: 'white' }}>
           <Person />
         </IconButton>
         <Menu

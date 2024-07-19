@@ -1,7 +1,27 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
 export type Loading = 'NotLoad' | 'Loaded' | 'Loading' | 'Error'
-export type DialogState = 'add' | 'edit' | 'none'
+export type DialogState = 'add' | 'edit' | 'view' | 'none'
+
+interface ColorShades {
+  100: string
+  200: string
+  300: string
+  400: string
+  500: string
+  600: string
+  700: string
+  800: string
+  900: string
+}
+
+export interface ColorTokens {
+  grey: ColorShades
+  primary: ColorShades
+  greenAccent: ColorShades
+  redAccent: ColorShades
+  blueAccent: ColorShades
+}
 
 export type CommonState = {
   isLoading?: boolean
@@ -9,6 +29,7 @@ export type CommonState = {
   messageAlert?: MessageAlertProp
   userInfo: any
   darkMode: boolean
+  colorTokens: ColorTokens
 }
 
 export type MessageAlertProp = {
@@ -21,6 +42,7 @@ export type MessageAlertProp = {
 const initialState = {
   isLoading: false,
   isSidebar: false,
+  darkMode: true,
   messageAlert: {
     info: '',
     isShowAlert: false,
@@ -28,7 +50,6 @@ const initialState = {
     type: 'success',
   },
   userInfo: {},
-  darkMode: false,
 }
 
 const commonStore = createSlice({
@@ -49,6 +70,12 @@ const commonStore = createSlice({
     },
     setUserInfo: (state: CommonState, action) => {
       state.userInfo = action.payload
+    },
+    setColorTokens: (state: CommonState, action: PayloadAction<ColorTokens>) => {
+      state.colorTokens = action.payload
+    },
+    setDarkmode: (state: CommonState, action: PayloadAction<boolean>) => {
+      state.darkMode = action.payload
     },
   },
 })

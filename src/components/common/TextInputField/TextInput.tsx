@@ -1,6 +1,8 @@
+import { RootState } from '@app/store/store'
 import { TextField } from '@mui/material'
 import React, { ReactNode } from 'react'
 import { Controller, Control } from 'react-hook-form'
+import { useSelector } from 'react-redux'
 
 type InnerProps = {
   type?: 'text' | 'password' | 'tel' | 'email' | 'textarea' | 'zip' | 'number'
@@ -88,6 +90,7 @@ const InnerTextInput: React.FC<InnerProps> = (props: InnerProps) => {
     numberMax,
   } = props
   const inputType = convertInputType(type)
+  const { colorTokens } = useSelector((state: RootState) => state.commonStore)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value
@@ -231,7 +234,13 @@ const InnerTextInput: React.FC<InnerProps> = (props: InnerProps) => {
       margin='dense'
       value={value}
       onChange={handleChange}
-      style={{ width: '100%', ...style }}
+      sx={{
+        width: '100%',
+        '& .Mui-focused': {
+          color: colorTokens?.blueAccent[900],
+        },
+        ...style,
+      }}
       inputProps={{
         maxLength,
         style: { imeMode },

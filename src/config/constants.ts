@@ -1,4 +1,5 @@
 export const APP_TITLE = 'React Typescript'
+
 export const LANGUAGES = [
   { code: 'en', name: 'English' },
   { code: 'ja', name: '日本' },

@@ -23,8 +23,8 @@ const ColorInputButton = styled(Button)<{ $bgColor?: string }>`
     }
   }
   &.Mui-disabled {
-    background-color: #eeeeee;
-    border: 1px solid #b2b0ad;
+    background-color: ${({ $bgColor }) => $bgColor || ''};
+    color: ${({ $bgColor }) => ColorUtils.getContrastingColor($bgColor)};
   }
 `
 

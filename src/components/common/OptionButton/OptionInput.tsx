@@ -152,9 +152,10 @@ const OptionButton: React.FC<Props> = (props: Props) => {
 
     return (
       <Controller
-        render={({ field: { onChange: handleChange } }) => (
+        render={({ field: { onChange: handleChange, value } }) => (
           <OptionButtonInternal
             {...props}
+            value={value}
             onChange={(newChecked) => {
               handleChange(newChecked)
               if (onChange) {

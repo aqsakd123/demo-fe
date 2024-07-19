@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Button, Chip, IconButton, Tooltip } from '@mui/material'
+import { Box, Button, IconButton, Tooltip } from '@mui/material'
 import { Close, Edit, RadioButtonUnchecked, TaskAlt } from '@mui/icons-material'
 import TagManagementFormDialog from './Dialog/TagManagementFormDialog'
-import { DialogState } from '@app/store/commonStore/CommonStore'
+import { ColorTokens, DialogState } from '@app/store/commonStore/CommonStore'
 import { useDispatch, useSelector } from 'react-redux'
 import tagManagementStore from '@app/store/tagManagementStore/TagManagementStore'
 import { RootState } from '@app/store/store'
@@ -17,26 +17,24 @@ import {
   deleteTagManagement,
 } from '@app/api/tagManagement/tag-management-api'
 import ColorUtils from '@app/helpers/ColorUtils'
-import { webPartOptions } from './Dialog/TagManagementFormInput'
-import SelectField from '@app/components/common/SelectComponent/SelectField'
 
-const StyledList = styled.div`
-  border: 1px solid gray;
+const StyledList = styled.div<{
+  colorTokens?: ColorTokens
+}>`
   border-radius: 10px;
   padding: 20px;
-`
+  background-color: ${({ colorTokens }) => `${colorTokens?.primary[400]}`};
 
-const StyledItem = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid gray;
-  border-radius: 10px;
-  padding: 20px;
-  margin-bottom: 8px;
+  .styled-item {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    margin-bottom: 8px;
+    background-color: ${({ colorTokens }) => `${colorTokens?.blueAccent[800]}`};
+  }
 `
-
 export type TagManagement = {
   id: string
 } & TagManagementBase
@@ -49,38 +47,31 @@ type TagManagementBase = {
   name: string
   description?: string
   color?: string
-  projectId: string
-  webPart?: string
 }
 
 export type TagManagementSpecification = {
   name?: string
-  projectId?: string
 }
 
 type TagManagementListProps = {
-  webPart?: string
-  handleSelect?: (val: string[] | string | undefined) => void
-  selectedId?: string[] | string
+  handleSelect?: (val: TagManagement[] | TagManagement | undefined) => void
+  selectedTag?: TagManagement[] | TagManagement
   mode?: 'single' | 'multiple'
 }
 
 const TagManagementList: React.FC<TagManagementListProps> = (props: TagManagementListProps) => {
-  const { webPart, selectedId, mode, handleSelect } = props
-  const { currentProjectId } = useSelector((state: RootState) => state.projectStore)
+  const { selectedTag, mode, handleSelect } = props
   const { loadingStatus, dataList } = useSelector((state: RootState) => state.tagManagementStore)
+  const { colorTokens } = useSelector((state: RootState) => state.commonStore)
 
   const [tagManagementFormDialogMode, setTagManagementFormDialogMode] =
     useState<DialogState>('none')
 
-  const [specification, setSpecification] = useState<TagManagementSpecification>({
-    projectId: currentProjectId,
-  })
+  const [specification, setSpecification] = useState<TagManagementSpecification>({})
 
   const [name, setName] = React.useState<string | undefined>(undefined)
-  const [webPartSelected, setWebPartSelected] = React.useState<string | undefined>(webPart)
 
-  const tagManagementList = dataList || []
+  const tagManagementList = dataList?.filter((it) => it.name?.includes(name?.trim() ?? '')) || []
 
   const dispatch = useDispatch()
 
@@ -133,14 +124,12 @@ const TagManagementList: React.FC<TagManagementListProps> = (props: TagManagemen
   const handleSetSpecification = () => {
     setSpecification((prev) => ({
       ...prev,
-      name,
-      projectId: currentProjectId,
     }))
     dispatch(tagManagementStore.actions.setLoadingStatus('NotLoad'))
   }
 
   return (
-    <StyledList>
+    <StyledList colorTokens={colorTokens}>
       {loadingStatus !== 'Loaded' && <LoadingComponent />}
       {tagManagementFormDialogMode !== 'none' && (
         <TagManagementFormDialog
@@ -149,105 +138,97 @@ const TagManagementList: React.FC<TagManagementListProps> = (props: TagManagemen
         />
       )}
       <Box mb={1} mt={1} display='flex' flexDirection='row-reverse' alignItems='center' gap={1}>
-        <Button variant='outlined' onClick={handleClickAddNew}>
-          Add new
-        </Button>
-
-        <Button variant='contained' onClick={handleSetSpecification}>
-          Search
-        </Button>
-
+        {!mode && (
+          <>
+            <Button variant='outlined' onClick={handleClickAddNew}>
+              Add new
+            </Button>
+            <Button color='error' variant='contained' onClick={handleSetSpecification}>
+              Search
+            </Button>
+          </>
+        )}
         <Box display='flex'>
           <TextInputField
-            variant='outlined'
+            variant='filled'
             type='text'
             label='Name'
+            labelWidth={0}
             id='name-search'
             name='name'
             value={name}
             onChange={(value) => setName(value)}
           />
-          <SelectField
-            options={webPartOptions}
-            id={`input-webPart-select`}
-            name='webPart'
-            label='Front/Backend'
-            value={webPartSelected}
-            onChange={(value) => setWebPartSelected(value)}
-          />
         </Box>
       </Box>
 
       <Box>
-        {tagManagementList
-          ?.filter((it) => (webPartSelected ? it.webPart === webPartSelected : true))
-          .map((tagManagement) => {
-            const displayChecked = Boolean(mode)
-            const isChecked = Array.isArray(selectedId)
-              ? selectedId?.includes(tagManagement.id)
-              : selectedId === tagManagement.id
+        {tagManagementList.map((tagManagement) => {
+          const displayChecked = Boolean(mode)
+          const isChecked = Array.isArray(selectedTag)
+            ? selectedTag.map((it) => it.id)?.includes(tagManagement.id)
+            : selectedTag?.id === tagManagement.id
 
-            const handleCheckedTag = () => {
-              if (!handleSelect) {
-                return
-              }
-              if (mode === 'multiple' && Array.isArray(selectedId)) {
-                handleSelect(
-                  isChecked
-                    ? selectedId.filter((it) => it === tagManagement.id)
-                    : selectedId.concat([tagManagement.id]),
-                )
-              } else if (mode === 'single' && !Array.isArray(selectedId)) {
-                handleSelect(isChecked ? undefined : tagManagement.id)
-              }
+          const handleCheckedTag = () => {
+            if (!handleSelect) {
+              return
             }
+            if (mode === 'multiple' && Array.isArray(selectedTag)) {
+              handleSelect(
+                isChecked
+                  ? selectedTag.filter((it) => it.id !== tagManagement.id)
+                  : selectedTag.concat([tagManagement]),
+              )
+            } else if (mode === 'single' && !Array.isArray(selectedTag)) {
+              handleSelect(isChecked ? undefined : tagManagement)
+            }
+          }
 
-            return (
-              <StyledItem
-                key={tagManagement.id}
-                style={{
-                  backgroundColor: tagManagement.color,
-                  color: ColorUtils.getContrastingColor(tagManagement?.color),
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                  {displayChecked && (
-                    <IconButton onClick={handleCheckedTag}>
-                      {isChecked ? <TaskAlt /> : <RadioButtonUnchecked />}
-                    </IconButton>
-                  )}
-                  <Tooltip title={tagManagement.description} arrow>
-                    <span style={{ fontWeight: 600, fontSize: '18px', marginBottom: 1 }}>
-                      {tagManagement.name}
-                    </span>
-                  </Tooltip>
-                  {tagManagement.webPart && (
-                    <Chip
-                      size='small'
-                      label={
-                        webPartOptions?.find((it) => it.value === tagManagement.webPart)?.label
-                      }
-                    />
-                  )}
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <Button onClick={() => handleClickEditTagManagement(tagManagement)}>
-                    <Edit fontSize='small' />
-                  </Button>
-                  <Popconfirm
-                    title='Are you sure you want to delete this tagManagement?'
-                    onConfirm={() => handleClickDeleteTagManagement(tagManagement)}
-                    okText='Yes'
-                    cancelText='No'
+          return (
+            <div
+              className='styled-item'
+              key={tagManagement.id}
+              style={{
+                backgroundColor: tagManagement.color,
+                color: ColorUtils.getContrastingColor(tagManagement?.color),
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                {displayChecked && (
+                  <IconButton onClick={handleCheckedTag}>
+                    {isChecked ? <TaskAlt /> : <RadioButtonUnchecked />}
+                  </IconButton>
+                )}
+                <Tooltip title={tagManagement.description} arrow>
+                  <span style={{ fontWeight: 600, fontSize: '18px', marginBottom: 1 }}>
+                    {tagManagement.name}
+                  </span>
+                </Tooltip>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Button
+                  sx={{ color: ColorUtils.getContrastingColor(tagManagement?.color) }}
+                  onClick={() => handleClickEditTagManagement(tagManagement)}
+                >
+                  <Edit fontSize='small' />
+                </Button>
+                <Popconfirm
+                  title='Are you sure you want to delete this tagManagement?'
+                  onConfirm={() => handleClickDeleteTagManagement(tagManagement)}
+                  okText='Yes'
+                  cancelText='No'
+                >
+                  <Button
+                    sx={{ color: ColorUtils.getContrastingColor(tagManagement?.color) }}
+                    onClick={(e) => e.stopPropagation()}
                   >
-                    <Button variant='text' onClick={(e) => e.stopPropagation()}>
-                      <Close />
-                    </Button>
-                  </Popconfirm>
-                </div>
-              </StyledItem>
-            )
-          })}
+                    <Close />
+                  </Button>
+                </Popconfirm>
+              </div>
+            </div>
+          )
+        })}
       </Box>
     </StyledList>
   )

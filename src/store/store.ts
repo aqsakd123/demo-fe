@@ -12,13 +12,8 @@ import {
 } from 'redux-persist'
 import commonStore from './commonStore/CommonStore'
 import formBuilderStore from './formBuilderPageStore/FormBuilderStore'
-import taskChecklistStore from './taskChecklistStore/TaskChecklistStore'
 import projectStore from './projectStore/ProjectStore'
-import projectManagementStore from './projectManagementStore/ProjectManagementStore'
-import codeCommonManagementStore from './codeCommonManagementStore/CodeCommonManagementStore'
 import tagManagementStore from './tagManagementStore/TagManagementStore'
-import codingFeatureStore from './codingFeatureStore/CodingFeatureStore'
-import codingFileStore from './codingFileStore/CodingFileStore'
 
 const rootPersistConfig = {
   key: 'root',
@@ -28,13 +23,8 @@ const rootPersistConfig = {
 const rootReducer = combineReducers({
   commonStore: commonStore.reducer,
   formBuilderStore: formBuilderStore.reducer,
-  taskChecklistStore: taskChecklistStore.reducer,
   projectStore: projectStore.reducer,
-  projectManagementStore: projectManagementStore.reducer,
-  codeCommonManagementStore: codeCommonManagementStore.reducer,
   tagManagementStore: tagManagementStore.reducer,
-  codingFeatureStore: codingFeatureStore.reducer,
-  codingFileStore: codingFileStore.reducer,
 })
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer)

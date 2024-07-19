@@ -37,6 +37,8 @@ const SimpleTypeDialogTitle = styled(DialogTitle)`
 
 const SimpleTypeDialogTitleText = styled(Typography)`
   flex-grow: 1;
+  font-weight: 400;
+  font-size: 18px;
 ` as typeof Typography
 
 const StyledDialogHeadContent = styled.div<{ $display?: boolean }>`
@@ -152,7 +154,7 @@ const StyledMuiDialog = styled(MuiDialog)<{
   height: auto;
   padding: 0px;
   & .MuiDialog-paperScrollPaper {
-    border-radius: 20px;
+    border-radius: 10px;
     ${({ $fullHeight, $minHeight }) =>
       $fullHeight
         ? 'min-height: calc(100vh - 64px);'

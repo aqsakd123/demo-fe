@@ -33,7 +33,7 @@ const TextInputField: React.FC<Props> = (props: Props) => {
   return (
     <InlineForm
       id={id}
-      label={label}
+      label={labelWidth === 0 ? undefined : label}
       suffix={suffix}
       labelWidth={labelWidth}
       required={required}
@@ -43,7 +43,15 @@ const TextInputField: React.FC<Props> = (props: Props) => {
       errorMessage={errorMessage}
       height={height}
     >
-      <TextInput id={id} name={name} error={error} style={style} disabled={disabled} {...others} />
+      <TextInput
+        id={id}
+        name={name}
+        error={error}
+        style={style}
+        label={labelWidth !== 0 ? undefined : label}
+        disabled={disabled}
+        {...others}
+      />
     </InlineForm>
   )
 }

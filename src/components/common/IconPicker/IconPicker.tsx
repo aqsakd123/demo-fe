@@ -7,11 +7,12 @@ export type IconPickerProps = {
   name: string
   value?: string
   control?: Control
+  disabled?: boolean
   onChange?: (value: string) => void
 }
 
 const IconPicker: React.FC<IconPickerProps> = (props: IconPickerProps) => {
-  const { name, control, id, value, onChange } = props
+  const { name, control, id, value, disabled, onChange } = props
   if (control) {
     return (
       <Controller
@@ -21,6 +22,7 @@ const IconPicker: React.FC<IconPickerProps> = (props: IconPickerProps) => {
           <IconPickerInner
             id={id}
             value={value}
+            disabled={disabled}
             onChange={(value) => {
               handleChangeRender(value)
               if (onChange) {

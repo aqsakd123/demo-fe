@@ -9,6 +9,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { useSelector } from 'react-redux'
 import { RootState } from '@app/store/store'
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import commonStore from '@app/store/commonStore/CommonStore'
 
 export const BreakPointsXS = 0
 export const BreakPointsSM = 760
@@ -54,9 +57,9 @@ export const tokens = (darkMode: boolean) => ({
           100: '#ededf0',
           200: '#a1a4ab',
           300: '#727681',
-          400: '#030015',
+          400: '#1F2A40',
           500: '#141b2d',
-          600: '#1F2A40',
+          600: '#030015',
           700: '#0c101b',
           800: '#080b12',
           900: '#040509',
@@ -154,54 +157,82 @@ export const tokens = (darkMode: boolean) => ({
       }),
 })
 
-export const themeSettings = (darkMode: boolean): ThemeOptions => {
-  const colors = tokens(darkMode)
+export const themeSettings = (mode: 'dark' | 'light'): ThemeOptions => {
+  const colors = tokens(mode === 'dark')
   return {
     palette: {
-      mode: darkMode ? 'dark' : 'light',
-      primary: {
-        main: colors.blueAccent[300],
-      },
-      background: {
-        paper: colors.primary[900],
-      },
+      mode: mode,
+      ...(mode === 'dark'
+        ? {
+            // palette values for dark mode
+            primary: {
+              main: colors.primary[500],
+            },
+            secondary: {
+              main: colors.greenAccent[500],
+            },
+            neutral: {
+              dark: colors.grey[700],
+              main: colors.grey[500],
+              light: colors.grey[100],
+            },
+            background: {
+              default: colors.primary[500],
+            },
+          }
+        : {
+            // palette values for light mode
+            primary: {
+              main: colors.primary[100],
+            },
+            secondary: {
+              main: colors.greenAccent[500],
+            },
+            neutral: {
+              dark: colors.grey[700],
+              main: colors.grey[500],
+              light: colors.grey[100],
+            },
+            background: {
+              default: '#fcfcfc',
+            },
+          }),
     },
     typography: {
+      fontFamily: ['Source Sans Pro', 'sans-serif'].join(','),
       fontSize: 12,
-      allVariants: {
-        color: darkMode ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.9)',
-      },
+
       h1: {
+        fontFamily: ['Source Sans Pro', 'sans-serif'].join(','),
         fontSize: 40,
       },
       h2: {
+        fontFamily: ['Source Sans Pro', 'sans-serif'].join(','),
         fontSize: 32,
       },
       h3: {
+        fontFamily: ['Source Sans Pro', 'sans-serif'].join(','),
         fontSize: 24,
       },
       h4: {
+        fontFamily: ['Source Sans Pro', 'sans-serif'].join(','),
         fontSize: 20,
       },
       h5: {
+        fontFamily: ['Source Sans Pro', 'sans-serif'].join(','),
         fontSize: 16,
       },
       h6: {
+        fontFamily: ['Source Sans Pro', 'sans-serif'].join(','),
         fontSize: 14,
       },
     },
     components: {
-      MuiDialog: {
+      MuiDrawer: {
         styleOverrides: {
           paper: {
-            border: `5px solid ${colors.blueAccent[300]}`, // Add blue border to dialog
-          },
-        },
-      },
-      MuiPopover: {
-        styleOverrides: {
-          paper: {
-            border: `5px solid ${colors.blueAccent[300]}`, // Add blue border to popover
+            backgroundColor: mode === 'dark' ? colors.redAccent[900] : undefined,
+            color: colors.grey[100],
           },
         },
       },
@@ -212,11 +243,27 @@ export const themeSettings = (darkMode: boolean): ThemeOptions => {
             height: 'fit-content',
           },
           outlined: {
-            border: `2px solid ${colors.blueAccent[300]}`,
+            boxShadow: `inset 0 0 2px ${colors.blueAccent[500]}`,
+            color: colors.grey[100],
+            '&:hover': {
+              color: colors.blueAccent[500],
+            },
+          },
+          text: {
+            color: colors.grey[100],
+            '&:hover': {
+              color: colors.blueAccent[500],
+            },
+          },
+          contained: {
+            backgroundColor: colors.blueAccent[700],
+            color: colors.grey[100],
+            '&:hover': {
+              backgroundColor: colors.blueAccent[500],
+            },
           },
         },
       },
-      // add more overrides if needed
     },
   }
 }
@@ -226,9 +273,14 @@ type Props = {
 }
 
 const ThemeProvider: React.FC<Props> = ({ children }: Props) => {
-  const { darkMode } = useSelector((state: RootState) => state.commonStore)
+  const dispatch = useDispatch()
 
-  const muiTheme = createTheme(themeSettings(darkMode))
+  const { darkMode } = useSelector((state: RootState) => state.commonStore)
+  const muiTheme = createTheme(themeSettings(darkMode ? 'dark' : 'light'))
+
+  useEffect(() => {
+    dispatch(commonStore.actions.setColorTokens(tokens(darkMode)))
+  }, [darkMode])
 
   return (
     <StyledThemeProvider theme={muiTheme}>

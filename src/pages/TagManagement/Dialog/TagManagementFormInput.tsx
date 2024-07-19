@@ -9,16 +9,8 @@ import { yup } from '@app/helpers/yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import TextInputField from '@app/components/common/TextInputField/TextInputField'
 import ColorInputField from '@app/components/common/ColorInput/ColorInputField'
-import SelectField from '@app/components/common/SelectComponent/SelectField'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import tagManagementStore from '@app/store/tagManagementStore/TagManagementStore'
-import { RootState } from '@app/store/store'
-
-export const webPartOptions = [
-  { value: 'frontend', label: 'Frontend' },
-  { value: 'backend', label: 'Backend' },
-  { value: '', label: '--' },
-]
 
 const validationSchema = yup.object().shape({
   name: yup.string().nullable().label('Name').required().max(50),
@@ -33,7 +25,6 @@ export type FormProps = {
 
 const TagManagementFormInput: React.FC<FormProps> = (props: FormProps) => {
   const { id, defaultValues, onSubmit } = props
-  const { currentProjectId } = useSelector((state: RootState) => state.projectStore)
 
   const dispatch = useDispatch()
 
@@ -51,10 +42,7 @@ const TagManagementFormInput: React.FC<FormProps> = (props: FormProps) => {
   }, [isDirty])
 
   const handleSubmitForm = handleSubmit(async (data: TagManagementInput) => {
-    if (!currentProjectId) {
-      return
-    }
-    const submitData: TagManagementInput = { ...data, projectId: currentProjectId }
+    const submitData: TagManagementInput = { ...data }
     onSubmit(submitData)
   })
 
@@ -96,15 +84,6 @@ const TagManagementFormInput: React.FC<FormProps> = (props: FormProps) => {
               id={`input-color-${id}`}
               name='color'
               label='Color'
-              control={control}
-            />
-          </div>
-          <div>
-            <SelectField
-              options={webPartOptions}
-              id={`input-webPart-${id}`}
-              name='webPart'
-              label='Front/Backend'
               control={control}
             />
           </div>
