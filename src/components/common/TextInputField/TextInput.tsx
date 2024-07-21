@@ -236,9 +236,9 @@ const InnerTextInput: React.FC<InnerProps> = (props: InnerProps) => {
       onChange={handleChange}
       sx={{
         width: '100%',
-        '& .Mui-focused': {
-          color: colorTokens?.blueAccent[900],
-        },
+        // '& .Mui-focused': {
+        //   color: colorTokens?.blueAccent[900],
+        // },
         ...style,
       }}
       inputProps={{

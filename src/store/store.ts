@@ -14,6 +14,7 @@ import commonStore from './commonStore/CommonStore'
 import formBuilderStore from './formBuilderPageStore/FormBuilderStore'
 import projectStore from './projectStore/ProjectStore'
 import tagManagementStore from './tagManagementStore/TagManagementStore'
+import demoEntityStore from './demoEntityStore/DemoEntityStore'
 
 const rootPersistConfig = {
   key: 'root',
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   formBuilderStore: formBuilderStore.reducer,
   projectStore: projectStore.reducer,
   tagManagementStore: tagManagementStore.reducer,
+  demoEntityStore: demoEntityStore.reducer,
 })
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer)

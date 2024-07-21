@@ -6,6 +6,7 @@ import Home from '@app/pages/home/Home'
 import Excel from '@app/pages/excel/Excel'
 import FormBuilder from '../pages/formBuilderPages/FormBuilderHome'
 import TagManagementList from '@app/pages/TagManagement/TagManagementList'
+import DemoEntityList from '@app/pages/DemoEntity/DemoEntityList'
 
 export type RouteInfo = {
   path: string
@@ -72,6 +73,17 @@ export const initRoutes = (): RouteInfo[] => {
         {
           path: '/tag-management',
           element: <TagManagementList />,
+        },
+      ],
+    },
+    {
+      path: '/demo-entity',
+      layout: <Default />,
+      roles: ['any'],
+      children: [
+        {
+          path: '/demo-entity',
+          element: <DemoEntityList />,
         },
       ],
     },
