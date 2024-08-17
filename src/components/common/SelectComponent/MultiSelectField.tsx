@@ -12,6 +12,7 @@ type Props = {
   errorMessage?: string
   tooltip?: string
   height?: string
+  isLoading?: boolean
 } & SelectProps
 
 const MultiSelectField: React.FC<Props> = (props: Props) => {
@@ -27,6 +28,7 @@ const MultiSelectField: React.FC<Props> = (props: Props) => {
     tooltip,
     style,
     height,
+    isLoading,
     ...others
   } = props
 
@@ -41,6 +43,7 @@ const MultiSelectField: React.FC<Props> = (props: Props) => {
       tooltip={tooltip}
       errorMessage={errorMessage}
       height={height}
+      isLoading={isLoading}
     >
       <MultiSelectComponent id={id} name={name} style={style} disabled={disabled} {...others} />
     </InlineForm>

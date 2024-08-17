@@ -2,9 +2,11 @@ import React, { ReactNode } from 'react'
 import styled from 'styled-components'
 import { Control, Controller } from 'react-hook-form'
 
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup/ToggleButtonGroup'
-import ToggleButton from '@mui/material/ToggleButton/ToggleButton'
-import useControlled from '@mui/material/utils/useControlled'
+import { ToggleButtonGroup, ToggleButton } from '@mui/material'
+import { useControlled } from '@mui/material'
+import { RootState } from '@app/store/store'
+import { useSelector } from 'react-redux'
+import { ColorTokens } from '@app/store/commonStore/CommonStore'
 
 const FormToggleButtonGroup = styled(ToggleButtonGroup)`
   display: inline-flex;
@@ -33,7 +35,10 @@ const StyledToggle = styled.div`
     border-top-left-radius: 0px;
   }
 `
-const FormToggleButton = styled(ToggleButton)<{ $disabledWithColor?: boolean }>`
+const FormToggleButton = styled(ToggleButton)<{
+  $disabledWithColor?: boolean
+  colorTokens?: ColorTokens
+}>`
   height: 32px;
   width: 100%;
   padding: 7px;
@@ -41,7 +46,7 @@ const FormToggleButton = styled(ToggleButton)<{ $disabledWithColor?: boolean }>`
   border-radius: 25px;
   flex: 1;
   border: 0;
-  background-color: #ebe7e5;
+  background-color: ${({ colorTokens }) => colorTokens?.grey[700]};
   &.Mui-selected {
     color: #ffffff !important;
     background-color: #1b4fbb !important;
@@ -90,12 +95,14 @@ const OptionButtonInternal: React.FC<Props> = (props: Props) => {
     defaultValue,
     disabledWithColor,
   } = props
+  const { colorTokens } = useSelector((state: RootState) => state.commonStore)
 
   const [value, setValue] = useControlled({
     controlled: valueProp,
     default: defaultValue,
     name: 'ToggleButtonGroup',
   })
+
   React.useEffect(() => {
     if (valueProp) {
       setValue(valueProp)
@@ -136,6 +143,7 @@ const OptionButtonInternal: React.FC<Props> = (props: Props) => {
             disabled={disabled}
             data-testid={`${id}-${option.value}`}
             $disabledWithColor={disabledWithColor}
+            colorTokens={colorTokens}
           >
             {option.label}
           </FormToggleButton>

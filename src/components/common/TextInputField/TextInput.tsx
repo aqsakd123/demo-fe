@@ -209,7 +209,7 @@ const InnerTextInput: React.FC<InnerProps> = (props: InnerProps) => {
         defaultValue={defaultValue}
         InputProps={{
           readOnly,
-          inputProps: { min: numberMin, max: numberMax },
+          inputProps: { min: numberMin, max: numberMax, 'data-testid': id },
           startAdornment: prefix ? <div style={{ marginRight: '10px' }}>{prefix}</div> : undefined,
           endAdornment: suffix ? <div style={{ marginLeft: '10px' }}>{suffix}</div> : undefined,
         }}

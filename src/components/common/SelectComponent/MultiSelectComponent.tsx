@@ -53,6 +53,7 @@ const SelectInternal: React.FC<Props> = (props: Props) => {
       </InputLabel>
       <Select
         id={id}
+        data-testid={id}
         required={required}
         defaultValue={defaultValue}
         label={label}

@@ -29,7 +29,9 @@ const DemoEntityFormDialog: React.FC<FormProps> = (props: FormProps) => {
 
   const { editItem, dirty: isDirty } = useSelector((state: RootState) => state.demoEntityStore)
   const isLoadingMode = (mode === 'edit' || mode === 'view') && editItem?.id
-  const [detailLoadingStatus, setDetailLoadingStatus] = React.useState<Loading>('NotLoad')
+  const [detailLoadingStatus, setDetailLoadingStatus] = React.useState<Loading>(
+    isLoadingMode ? 'NotLoad' : 'Loaded',
+  )
 
   const confirm = useConfirm()
   const handleApiError = useHandleApiError()
@@ -95,11 +97,11 @@ const DemoEntityFormDialog: React.FC<FormProps> = (props: FormProps) => {
       testHourInput: dayjs(editItem?.testHourInput),
     }
   }
-  console.log(editItem)
+
   return (
     <Dialog
       open
-      title={mode === 'add' ? 'Add Form' : 'Edit Form'}
+      title={`${mode} form`}
       onClickReturn={handleClickReturn}
       fullWidth
       selfContentAndActions

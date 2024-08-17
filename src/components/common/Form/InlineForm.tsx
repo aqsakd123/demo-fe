@@ -1,7 +1,14 @@
-import { FormLabel, Tooltip, FormHelperText, Typography } from '@mui/material'
+import {
+  FormLabel,
+  Tooltip,
+  FormHelperText,
+  Typography,
+  Fade,
+  FormControl as MuiFormControl,
+  CircularProgress,
+} from '@mui/material'
 import React, { ReactNode } from 'react'
 import styled from 'styled-components'
-import MuiFormControl from '@mui/material/FormControl'
 
 const StyledMuiFormControl = styled(MuiFormControl)`
   justify-items: flex-start;
@@ -9,6 +16,10 @@ const StyledMuiFormControl = styled(MuiFormControl)`
 
   & .MuiFormControl-root .MuiInputBase-root {
     margin-bottom: 5px;
+  }
+
+  & .MuiCircularProgress-root {
+    height: max-content !important;
   }
 ` as typeof MuiFormControl
 
@@ -25,6 +36,7 @@ type Props = {
   suffix?: ReactNode | string
   errorMessage?: string
   height?: string
+  isLoading?: boolean
 }
 
 const InlineForm: React.FC<Props> = ({
@@ -40,6 +52,7 @@ const InlineForm: React.FC<Props> = ({
   errorMessage,
   children,
   tooltip,
+  isLoading = false,
 }: Props) => {
   return (
     <StyledMuiFormControl
@@ -65,12 +78,26 @@ const InlineForm: React.FC<Props> = ({
         </Tooltip>
       </FormLabel>
       <div style={{ width: '100%' }}>
-        <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+        <div
+          data-testid={`inline-form-${id}`}
+          style={{ display: 'flex', alignItems: 'center', width: '100%' }}
+        >
           <>{children}</>
           <div style={{ marginLeft: '10px' }}>{suffix}</div>
         </div>
         <div>{errorMessage && <FormHelperText>{errorMessage}</FormHelperText>}</div>
       </div>
+      {isLoading && (
+        <Fade
+          in={isLoading}
+          style={{
+            transitionDelay: isLoading ? '800ms' : '0ms',
+          }}
+          unmountOnExit
+        >
+          <CircularProgress />
+        </Fade>
+      )}
     </StyledMuiFormControl>
   )
 }

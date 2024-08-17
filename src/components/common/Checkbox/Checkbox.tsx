@@ -1,8 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import Checkbox from '@mui/material/Checkbox'
 import { Controller, Control } from 'react-hook-form'
-import { FormControlLabel } from '@mui/material'
+import { FormControlLabel, Checkbox } from '@mui/material'
 
 const StyledFormControlLabel = styled(FormControlLabel)`
   & .MuiFormControlLabel-label {

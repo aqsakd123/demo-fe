@@ -90,6 +90,7 @@ const CalendarInputInternal: React.FC<InternalProps> = (props: InternalProps) =>
           size: 'small',
           inputProps: {
             id: id,
+            'data-testid': id,
             name: name,
             placeholder: placeholder,
             error: error?.toString(),

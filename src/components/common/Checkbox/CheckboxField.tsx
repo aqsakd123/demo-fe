@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 import { Control, Controller } from 'react-hook-form'
 import InlineForm from '../Form/InlineForm'
-import FormGroup from '@mui/material/FormGroup/FormGroup'
+import { FormGroup } from '@mui/material'
 import Checkbox from './Checkbox'
 
 export type Props = {

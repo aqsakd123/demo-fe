@@ -37,8 +37,8 @@ const SimpleTypeDialogTitle = styled(DialogTitle)`
 
 const SimpleTypeDialogTitleText = styled(Typography)`
   flex-grow: 1;
-  font-weight: 400;
-  font-size: 18px;
+  font-weight: 600;
+  font-size: 20px;
 ` as typeof Typography
 
 const StyledDialogHeadContent = styled.div<{ $display?: boolean }>`

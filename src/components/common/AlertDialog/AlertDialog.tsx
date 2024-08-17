@@ -5,8 +5,8 @@ import {
   DialogContentText,
   DialogActions,
   Button,
+  ButtonBaseActions,
 } from '@mui/material'
-import { ButtonBaseActions } from '@mui/material/ButtonBase/ButtonBase'
 import React, { ReactNode } from 'react'
 
 export type AlertDialogProps = {

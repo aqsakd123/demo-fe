@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Control, Controller } from 'react-hook-form'
 import { BlockPicker, Color, ColorResult } from 'react-color'
-import Button from '@mui/material/Button/Button'
-import { Popover } from '@mui/material'
+import { Popover, Button } from '@mui/material'
 import ColorUtils from '@app/helpers/ColorUtils'
 
 // color: ${({ $bgColor }) => Colors.getContrastingColor($bgColor || '')};

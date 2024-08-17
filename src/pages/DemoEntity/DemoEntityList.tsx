@@ -3,18 +3,14 @@ import { Box, Button, ToggleButton, ToggleButtonGroup, Tooltip } from '@mui/mate
 import ColorUtils from '@app/helpers/ColorUtils'
 import { Close, Edit, RemoveRedEye } from '@mui/icons-material'
 import DemoEntityFormDialog from './Dialog/DemoEntityFormDialog'
-import { ColorTokens, DialogState, Loading } from '@app/store/commonStore/CommonStore'
+import { ColorTokens } from '@app/store/commonStore/CommonStore'
+import { DialogState, LabelAndValue, Loading } from '@app/common/type'
 import { useDispatch, useSelector } from 'react-redux'
 import demoEntityStore from '@app/store/demoEntityStore/DemoEntityStore'
 import { RootState } from '@app/store/store'
 import { useUnmount } from 'react-use'
 import { Popconfirm } from 'antd'
 import styled from 'styled-components'
-import TextInputField from '@app/components/common/TextInputField/TextInputField'
-
-import SelectField from '@app/components/common/SelectComponent/SelectField'
-import CalendarPickerField from '@app/components/common/CalendarPicker/CalendarPickerField'
-import LoadingComponent from '@app/components/common/Loading/Loading'
 import {
   fetchDemoEntityList,
   insertDemoEntity,
@@ -31,6 +27,20 @@ import {
 } from './Dialog/DemoEntityFormInput'
 
 import useHandleApiError from '@app/config/hanldeApiError/useHandleApiError'
+
+import TextInputField from '@app/components/common/TextInputField/TextInputField'
+import SelectField from '@app/components/common/SelectComponent/SelectField'
+import CalendarPickerField from '@app/components/common/CalendarPicker/CalendarPickerField'
+import LoadingComponent from '@app/components/common/Loading/Loading'
+import CheckboxInputField from '@app/components/common/Checkbox/CheckboxInputField'
+import OptionButtonField from '@app/components/common/OptionButton/OptionInputField'
+import SwitchInputField from '@app/components/common/Switch/SwitchInputField'
+import HourInputField from '@app/components/common/HourInput/HourInputField'
+import MultiSelectField from '@app/components/common/SelectComponent/MultiSelectField'
+import ColorInputField from '@app/components/common/ColorInput/ColorInputField'
+import IconPickerInputField from '@app/components/common/IconPicker/IconPickerInputField'
+import RadioField from '@app/components/common/Radio/RadioField'
+import CheckboxInner from '@app/components/common/Checkbox/Checkbox'
 
 const StyledList = styled.div<{
   colorTokens?: ColorTokens
@@ -66,6 +76,10 @@ const StyledList = styled.div<{
     background-color: ${({ colorTokens }) => `${colorTokens?.blueAccent[800]}`};
   }
 `
+
+const getLabel = (options: LabelAndValue[], value: string) => {
+  return (options || [])?.find((it) => it.value === value)?.label
+}
 
 export type DemoEntity = {
   id: string
@@ -113,7 +127,6 @@ export type DemoEntitySpecification = {
 
 const DemoEntityList: React.FC = () => {
   const [demoEntityFormDialogMode, setDemoEntityFormDialogMode] = useState<DialogState>('none')
-  const [specification, setSpecification] = useState<DemoEntitySpecification>({})
 
   const [name, setName] = React.useState<string | undefined>(undefined)
   const [testCombobox, setTestCombobox] = React.useState<string | undefined>(undefined)
@@ -123,10 +136,10 @@ const DemoEntityList: React.FC = () => {
   const [endTestDateInput2, setEndTestDateInput2] = React.useState<Date | undefined>(undefined)
   const [testDateInput3, setTestDateInput3] = React.useState<Date | undefined>(undefined)
 
-  const { loadingStatus, dataList } = useSelector((state: RootState) => state.demoEntityStore)
+  const { loadingStatus, dataList: demoEntityList } = useSelector(
+    (state: RootState) => state.demoEntityStore,
+  )
   const { darkMode, colorTokens } = useSelector((state: RootState) => state.commonStore)
-
-  const demoEntityList = dataList || []
 
   const dispatch = useDispatch()
   const handleApiError = useHandleApiError()
@@ -135,7 +148,15 @@ const DemoEntityList: React.FC = () => {
     const handleFetchData = async () => {
       try {
         dispatch(demoEntityStore.actions.setLoadingStatus('Loading'))
-        const fetchedData = await fetchDemoEntityList(specification)
+        const fetchedData = await fetchDemoEntityList({
+          name,
+          testCombobox,
+          testMultiCombobox,
+          testDateInput1,
+          startTestDateInput2,
+          endTestDateInput2,
+          testDateInput3,
+        })
         dispatch(demoEntityStore.actions.setDemoEntityList(fetchedData || []))
       } catch (error) {
         handleApiError(error)
@@ -177,16 +198,7 @@ const DemoEntityList: React.FC = () => {
     }
   }
 
-  const handleSetSpecification = () => {
-    setSpecification({
-      name,
-      testCombobox,
-      testMultiCombobox,
-      testDateInput1,
-      startTestDateInput2,
-      endTestDateInput2,
-      testDateInput3,
-    })
+  const handleClickSearch = () => {
     dispatch(demoEntityStore.actions.setLoadingStatus('NotLoad'))
   }
 
@@ -198,10 +210,10 @@ const DemoEntityList: React.FC = () => {
       )}
       <div className='filter-fields'>
         <div style={{ display: 'flex', gap: '8px' }}>
-          <Button variant='outlined' onClick={handleClickAddNew}>
+          <Button data-testid='add-button' variant='outlined' onClick={handleClickAddNew}>
             Add new
           </Button>
-          <Button variant='contained' onClick={handleSetSpecification}>
+          <Button data-testid='search-button' variant='contained' onClick={handleClickSearch}>
             Search
           </Button>
         </div>
@@ -253,20 +265,28 @@ const DemoEntityList: React.FC = () => {
         {demoEntityList.map((demoEntity) => {
           return (
             <div className='field-details' key={demoEntity.id}>
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <div
+                style={{ display: 'flex', flexDirection: 'column' }}
+                data-testid={`demoEntity-${demoEntity.id}`}
+              >
                 <span>Id: {demoEntity.id}</span>
                 <span>Name: {demoEntity.name}</span>
                 <span>Description: {demoEntity.description}</span>
                 <span></span>
                 <span></span>
-                <span></span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Button onClick={() => handleClickEditDemoEntity(demoEntity, 'view')}>
+                <Button
+                  data-testid={`view-detail-${demoEntity.id}-button`}
+                  onClick={() => handleClickEditDemoEntity(demoEntity, 'view')}
+                >
                   <RemoveRedEye fontSize='small' />
                 </Button>
 
-                <Button onClick={() => handleClickEditDemoEntity(demoEntity, 'edit')}>
+                <Button
+                  data-testid={`edit-detail-${demoEntity.id}-button`}
+                  onClick={() => handleClickEditDemoEntity(demoEntity, 'edit')}
+                >
                   <Edit fontSize='small' />
                 </Button>
                 <Popconfirm
@@ -275,7 +295,11 @@ const DemoEntityList: React.FC = () => {
                   okText='Yes'
                   cancelText='No'
                 >
-                  <Button variant='text' onClick={(e) => e.stopPropagation()}>
+                  <Button
+                    data-testid={`delete-detail-${demoEntity.id}-button`}
+                    variant='text'
+                    onClick={(e) => e.stopPropagation()}
+                  >
                     <Close />
                   </Button>
                 </Popconfirm>

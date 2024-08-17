@@ -1,7 +1,7 @@
 import { MAXIMUM_FILE_SIZE } from '@app/common/Contants'
 import { ReactNode } from 'react'
 import UploadFileIcon from '@mui/icons-material/UploadFile'
-import Button from '@mui/material/Button'
+import { Button } from '@mui/material'
 
 type Props = {
   maximum?: number

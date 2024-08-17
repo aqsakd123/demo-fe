@@ -19,7 +19,7 @@ import demoEntityStore from './demoEntityStore/DemoEntityStore'
 const rootPersistConfig = {
   key: 'root',
   storage: storage,
-  whitelist: ['userReducer', 'projectStore'],
+  whitelist: ['userReducer', 'commonStore'],
 }
 const rootReducer = combineReducers({
   commonStore: commonStore.reducer,

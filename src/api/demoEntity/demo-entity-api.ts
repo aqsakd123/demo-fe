@@ -7,8 +7,7 @@ import {
   UPDATE_DEMO_ENTITY,
   GET_DETAIL_DEMO_ENTITY,
 } from './demo-entity-type-graphql'
-
-const BASE_URL = '/graphql'
+import { BASE_URL } from '../constant'
 
 export const fetchDemoEntityList = async (specification?: DemoEntitySpecification) => {
   const response = await axiosInstance.post(BASE_URL, {

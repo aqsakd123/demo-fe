@@ -105,3 +105,16 @@ export const fakeFile = (fileName: string, fileSize: number) => {
   Object.defineProperty(file, 'size', { value: fileSize * 1024, configurable: true })
   return file
 }
+
+export function generateRandomString(length = 100) {
+  const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  let result = ''
+  const charsetLength = charset.length
+
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * charsetLength)
+    result += charset[randomIndex]
+  }
+
+  return result
+}

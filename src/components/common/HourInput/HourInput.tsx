@@ -19,6 +19,7 @@ const HourInput: React.FC<HourInputProps> = (props: HourInputProps) => {
         render={({ field: { onChange: handleChangeRender, value } }) => (
           <TimePicker
             {...rest}
+            slotProps={{ textField: { size: 'small' } }}
             value={value}
             onChange={(value) => {
               handleChangeRender(value)
@@ -32,7 +33,7 @@ const HourInput: React.FC<HourInputProps> = (props: HourInputProps) => {
       />
     )
   } else {
-    return <TimePicker {...rest} onChange={onChange} />
+    return <TimePicker {...rest} slotProps={{ textField: { size: 'small' } }} onChange={onChange} />
   }
 }
 

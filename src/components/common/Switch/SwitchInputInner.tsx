@@ -18,6 +18,10 @@ const SwitchInputInner: React.FC<SwitchInnerProps> = (props: SwitchInnerProps) =
         render={({ field: { onChange: handleChangeRender, value } }) => (
           <Switch
             {...rest}
+            inputProps={{
+              // @ts-ignore
+              'data-testid': props.id,
+            }}
             checked={value}
             onChange={(_event, checked) => {
               handleChangeRender(checked)
@@ -34,6 +38,10 @@ const SwitchInputInner: React.FC<SwitchInnerProps> = (props: SwitchInnerProps) =
     return (
       <Switch
         {...rest}
+        inputProps={{
+          // @ts-ignore
+          'data-testid': props.id,
+        }}
         name={name}
         onChange={(_e, value) => {
           if (onChange) {

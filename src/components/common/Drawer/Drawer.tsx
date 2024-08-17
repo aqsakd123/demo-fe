@@ -1,4 +1,4 @@
-import Drawer from '@mui/material/Drawer'
+import { Drawer } from '@mui/material'
 import React from 'react'
 import styled from 'styled-components'
 

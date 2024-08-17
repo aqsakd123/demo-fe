@@ -11,6 +11,7 @@ type Props = {
   errorMessage?: string
   tooltip?: string
   height?: string
+  isLoading?: boolean
 } & SelectProps
 
 const SelectField: React.FC<Props> = (props: Props) => {
@@ -26,6 +27,7 @@ const SelectField: React.FC<Props> = (props: Props) => {
     tooltip,
     style,
     height,
+    isLoading,
     ...others
   } = props
 
@@ -40,6 +42,7 @@ const SelectField: React.FC<Props> = (props: Props) => {
       tooltip={tooltip}
       errorMessage={errorMessage}
       height={height}
+      isLoading={isLoading}
     >
       <SelectComponent
         id={id}
