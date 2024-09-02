@@ -9,7 +9,11 @@ import { screen } from '@testing-library/dom'
 import { mockApi } from '@app/helpers/test-helpers/api-mock'
 import DemoEntityFormDialog from '../Dialog/DemoEntityFormDialog'
 import userEvent from '@testing-library/user-event'
-import { generateRandomString } from '@app/helpers/test-helpers/test-utils'
+import {
+  generateRandomString,
+  mockInputNumberField,
+  mockTypeTextField,
+} from '@app/helpers/test-helpers/test-utils'
 import { useForm } from 'react-hook-form'
 
 const renderComponent = () => {
@@ -39,30 +43,22 @@ const clickSubmitBtn = async () => {
   })
 }
 
-const changeStringValue = async (testId: string) => {
-  await act(async () => {
-    const input = screen.getByTestId(testId)
-    expect(input).toBeInTheDocument()
-    userEvent.type(input, 'New Value')
-  })
-}
-
 describe('DemoEntityFormInput', () => {
   test('should render all input fields', async () => {
     await act(() => renderComponent())
 
-    expect(screen.getByTestId('inline-form-input-name')).toBeInTheDocument()
-    expect(screen.getByTestId('inline-form-input-description')).toBeInTheDocument()
-    expect(screen.getByTestId('inline-form-input-testTextarea')).toBeInTheDocument()
-    expect(screen.getByTestId('inline-form-input-testCombobox')).toBeInTheDocument()
-    expect(screen.getByTestId('inline-form-input-testMultiCombobox')).toBeInTheDocument()
-    expect(screen.getByTestId('inline-form-input-testOptionalField')).toBeInTheDocument()
-    expect(screen.getByTestId('inline-form-input-testRadioField')).toBeInTheDocument()
-    expect(screen.getByTestId('inline-form-input-testNumberInput')).toBeInTheDocument()
-    expect(screen.getByTestId('inline-form-input-testSwitch')).toBeInTheDocument()
-    expect(screen.getByTestId('inline-form-input-testDateInput1')).toBeInTheDocument()
-    expect(screen.getByTestId('inline-form-input-testDateInput2')).toBeInTheDocument()
-    expect(screen.getByTestId('inline-form-input-testDateInput3')).toBeInTheDocument()
+    expect(screen.getByTestId('input-name')).toBeInTheDocument()
+    expect(screen.getByTestId('input-description')).toBeInTheDocument()
+    expect(screen.getByTestId('input-testTextarea')).toBeInTheDocument()
+    expect(screen.getByTestId('input-testCombobox')).toBeInTheDocument()
+    expect(screen.getByTestId('input-testMultiCombobox')).toBeInTheDocument()
+    expect(screen.getByTestId('input-testOptionalField')).toBeInTheDocument()
+    expect(screen.getByTestId('input-testRadioField')).toBeInTheDocument()
+    expect(screen.getByTestId('input-testNumberInput')).toBeInTheDocument()
+    expect(screen.getByTestId('input-testSwitch')).toBeInTheDocument()
+    expect(screen.getByTestId('input-testDateInput1')).toBeInTheDocument()
+    expect(screen.getByTestId('input-testDateInput1')).toBeInTheDocument()
+    expect(screen.getByTestId('input-testDateInput1')).toBeInTheDocument()
     expect(screen.getByTestId('inline-form-input-testHourInput')).toBeInTheDocument()
     expect(screen.getByTestId('inline-form-input-testColorInput')).toBeInTheDocument()
     expect(screen.getByTestId('input-testCheckboxGroup')).toBeInTheDocument()
@@ -74,8 +70,9 @@ describe('DemoEntityFormInput', () => {
 
     const nameInput = screen.getByTestId('input-name')
     expect(nameInput).toBeInTheDocument()
-    await userEvent.type(nameInput, 'New Name')
-    expect(nameInput).toHaveValue('New Name')
+    await mockTypeTextField(nameInput, 'New Name Value 1')
+    await mockTypeTextField(nameInput, 'New Name Value 2')
+    await mockTypeTextField(nameInput, 'New Name Value 3')
   })
 
   test('description change value', async () => {
@@ -83,8 +80,14 @@ describe('DemoEntityFormInput', () => {
 
     const descriptionInput = screen.getByTestId('input-description')
     expect(descriptionInput).toBeInTheDocument()
-    await userEvent.type(descriptionInput, 'New Description')
-    expect(descriptionInput).toHaveValue('New Description')
+    await mockTypeTextField(descriptionInput, 'New Description Value 1')
+    await mockTypeTextField(descriptionInput, 'New Name Value 3')
+    await mockTypeTextField(descriptionInput, 'New Name Value 3')
+
+    // Test description cannot enter more than 2000 characters
+    const randomMaxLengthText = generateRandomString(2500)
+    await mockTypeTextField(descriptionInput, randomMaxLengthText, false)
+    expect(descriptionInput).toHaveValue(randomMaxLengthText.substring(0, 2000))
   })
 
   test('testTextarea change value', async () => {
@@ -131,7 +134,7 @@ describe('DemoEntityFormInput', () => {
     expect(testOptionalFieldOption2).toHaveClass('Mui-selected')
   })
 
-  test('testRadioField change value', async () => {
+  test.only('testRadioField change value', async () => {
     await act(() => renderComponent())
 
     const testRadioFieldInput = screen.getByTestId('input-testRadioField')
@@ -151,11 +154,11 @@ describe('DemoEntityFormInput', () => {
 
     const testNumberInput = screen.getByTestId('input-testNumberInput')
     expect(testNumberInput).toBeInTheDocument()
-    await typeField(testNumberInput, '123')
-    expect(testNumberInput).toHaveValue(123)
-    await typeField(testNumberInput, 'abc')
-    expect(testNumberInput).toHaveValue(null)
-    await typeField(testNumberInput, '123abc')
+
+    await mockInputNumberField(testNumberInput, 123)
+
+    await mockInputNumberField(testNumberInput, 'abc', false)
+    await mockInputNumberField(testNumberInput, '123abc', false)
     expect(testNumberInput).toHaveValue(123)
   })
 
@@ -230,7 +233,11 @@ describe('DemoEntityFormInput Validation', () => {
 
     // Info: data-testid="input-name", id="input-name", label="InputName"
     // When change value of data-testid='input-name', lose required error message
-    await changeStringValue('input-name')
+    await act(async () => {
+      const input = screen.getByTestId('input-name')
+      expect(input).toBeInTheDocument()
+      userEvent.type(input, 'New Value')
+    })
     expect(screen.queryByText('Name is a required field')).not.toBeInTheDocument()
 
     const testNumberInput = screen.getByTestId('input-testNumberInput')

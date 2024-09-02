@@ -45,9 +45,9 @@ export const testOptionalFieldOptions = [
 ]
 
 export const testRadioFieldOptions = [
-  { value: 'select-1', label: 'Select 1' },
-  { value: 'select-2', label: 'Select 2' },
-  { value: 'select-3', label: 'Select 3' },
+  { value: 'select-1', label: 'Select 1 radio' },
+  { value: 'select-2', label: 'Select 2 radio' },
+  { value: 'select-3', label: 'Select 3 radio' },
 ]
 
 export const testCheckboxGroupOptions = [
@@ -238,7 +238,7 @@ const DemoEntityFormInput: React.FC<FormProps> = (props: FormProps) => {
           />
           <RadioField
             radios={testRadioFieldOptions}
-            id='input-test_radio_field'
+            id='input-testRadioField'
             name='testRadioField'
             label='Test Radio Field'
             control={control}

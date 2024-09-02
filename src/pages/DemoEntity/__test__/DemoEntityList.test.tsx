@@ -7,7 +7,7 @@ import {
   GET_DETAIL_DEMO_ENTITY,
   GET_LIST_DEMO_ENTITY,
 } from '@app/api/demoEntity/demo-entity-type-graphql'
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { store } from '@app/store/store'
@@ -117,6 +117,7 @@ describe('fetchDemoEntityList', () => {
   it('click detail button', async () => {
     mockedAxios.post.mockResolvedValue(mockData)
     const resultList = mockData.data.data.getListDemoEntity
+    const resultDetail = mockData.data.data.getDetailDemoEntity
 
     await act(() => renderComponent())
 

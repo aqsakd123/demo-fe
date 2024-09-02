@@ -4,3 +4,8 @@ export interface IBodyResponse {
   message?: string | null
   output?: any
 }
+
+export type PagingRequest = {
+  page: number
+  size: number
+}

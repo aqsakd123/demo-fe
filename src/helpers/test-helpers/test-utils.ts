@@ -1,6 +1,7 @@
 /* eslint-disable testing-library/no-node-access */
 /* eslint-disable testing-library/prefer-screen-queries */
 import { act, fireEvent, getByRole, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 /**
  * Gets an input element by invoking screen.getByTestId(testId). If the element is not an input, it will try to get its child element by role.
@@ -117,4 +118,34 @@ export function generateRandomString(length = 100) {
   }
 
   return result
+}
+
+/**
+ * mock user input for TextInput
+ */
+export const mockTypeTextField = async (input: HTMLElement, value: string, equal = true) => {
+  await userEvent.clear(input)
+  await userEvent.type(input, value)
+  if (equal) {
+    expect(input).toHaveValue(value)
+  } else {
+    expect(input).not.toHaveValue(value)
+  }
+}
+
+/**
+ * mock user input for NumberInput
+ */
+export const mockInputNumberField = async (
+  input: HTMLElement,
+  value: number | string,
+  equal = true,
+) => {
+  await userEvent.clear(input)
+  await userEvent.type(input, value != undefined ? `${value}` : '')
+  if (equal) {
+    expect(input).toHaveValue(value)
+  } else {
+    expect(input).not.toHaveValue(value)
+  }
 }

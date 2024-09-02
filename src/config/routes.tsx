@@ -7,6 +7,7 @@ import Excel from '@app/pages/excel/Excel'
 import FormBuilder from '../pages/formBuilderPages/FormBuilderHome'
 import TagManagementList from '@app/pages/TagManagement/TagManagementList'
 import DemoEntityList from '@app/pages/DemoEntity/DemoEntityList'
+import DemoExampleList from '@app/pages/DemoExample/DemoExampleList'
 
 export type RouteInfo = {
   path: string
@@ -77,13 +78,13 @@ export const initRoutes = (): RouteInfo[] => {
       ],
     },
     {
-      path: '/demo-entity',
+      path: '/demo-example',
       layout: <Default />,
       roles: ['any'],
       children: [
         {
-          path: '/demo-entity',
-          element: <DemoEntityList />,
+          path: '/demo-example',
+          element: <DemoExampleList />,
         },
       ],
     },

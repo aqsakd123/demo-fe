@@ -58,8 +58,8 @@ export const linkItems: LinkItemsType[] = [
   },
   {
     id: 4,
-    text: 'Demo Entity',
-    link: '/demo-entity',
+    text: 'Demo Example',
+    link: '/demo-example',
   },
 ]
 
