@@ -6,9 +6,8 @@ import Home from '@app/pages/home/Home'
 import Excel from '@app/pages/excel/Excel'
 import FormBuilder from '../pages/formBuilderPages/FormBuilderHome'
 import TagManagementList from '@app/pages/TagManagement/TagManagementList'
-import S3Manager from '@app/pages/DemoExample/S3Manager'
 import { useNavigate } from 'react-router-dom'
-import DemoEntityFormDialog from '@app/pages/DemoEntity/Dialog/DemoEntityFormDialog'
+import S3Manager from '@app/pages/DemoExample/S3Manager'
 
 export type RouteInfo = {
   path: string
