@@ -1,6 +1,6 @@
 import PermissionCheck from '@app/components/PermissionCheck'
 import AppProvider from '@app/config/AppProvider'
-import { initRoutes, RouteInfo } from '@app/config/routes'
+import { useInitRoutes, RouteInfo } from '@app/config/routes'
 import E403 from '@app/pages/error/E403'
 import { Provider } from 'react-redux'
 import { Route, Routes } from 'react-router-dom'
@@ -17,7 +17,7 @@ const buildElement = (e: RouteInfo) => {
 }
 
 const App = () => {
-  const routes = initRoutes()
+  const routes = useInitRoutes()
 
   return (
     <Provider store={store}>

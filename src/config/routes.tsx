@@ -6,8 +6,9 @@ import Home from '@app/pages/home/Home'
 import Excel from '@app/pages/excel/Excel'
 import FormBuilder from '../pages/formBuilderPages/FormBuilderHome'
 import TagManagementList from '@app/pages/TagManagement/TagManagementList'
-import DemoEntityList from '@app/pages/DemoEntity/DemoEntityList'
-import DemoExampleList from '@app/pages/DemoExample/DemoExampleList'
+import S3Manager from '@app/pages/DemoExample/S3Manager'
+import { useNavigate } from 'react-router-dom'
+import DemoEntityFormDialog from '@app/pages/DemoEntity/Dialog/DemoEntityFormDialog'
 
 export type RouteInfo = {
   path: string
@@ -18,10 +19,22 @@ export type RouteInfo = {
 }
 
 /**
+ * Export constant for paths
+ */
+export const paths = {
+  demoEntityListPath: '/demo-entity',
+  demoEntityAddPath: '/demo-entity/add/:id',
+  demoEntityEditPath: '/demo-entity/edit/:id',
+  demoEntityDetailPath: '/demo-entity/detail/:id',
+}
+
+/**
  * Define application routes
  * @returns
  */
-export const initRoutes = (): RouteInfo[] => {
+export const useInitRoutes = (): RouteInfo[] => {
+  const navigate = useNavigate()
+
   return [
     {
       path: '/login',
@@ -84,7 +97,7 @@ export const initRoutes = (): RouteInfo[] => {
       children: [
         {
           path: '/demo-example',
-          element: <DemoExampleList />,
+          element: <S3Manager />,
         },
       ],
     },

@@ -1,4 +1,4 @@
-export const createDownloadLink = (blobData: Blob, filename: string) => {
+const createDownloadLink = (blobData: Blob, filename: string) => {
   const url = window.URL.createObjectURL(blobData)
   const link = document.createElement('a')
   link.href = url
@@ -8,3 +8,5 @@ export const createDownloadLink = (blobData: Blob, filename: string) => {
   document.body.removeChild(link)
   window.URL.revokeObjectURL(url)
 }
+
+export default { createDownloadLink }
