@@ -3,11 +3,9 @@ import Default from '@app/layout/Default'
 import Login from '@app/pages/login/Login'
 import E404 from '@app/pages/error/E404'
 import Home from '@app/pages/home/Home'
-import Excel from '@app/pages/excel/Excel'
 import FormBuilder from '../pages/formBuilderPages/FormBuilderHome'
-import TagManagementList from '@app/pages/TagManagement/TagManagementList'
 import { useNavigate } from 'react-router-dom'
-import S3Manager from '@app/pages/DemoExample/S3Manager'
+import WebSocketComponent from '@app/pages/AwsAndSocketExample/WebSocketComponent'
 
 export type RouteInfo = {
   path: string
@@ -57,17 +55,6 @@ export const useInitRoutes = (): RouteInfo[] => {
       ],
     },
     {
-      path: '/excel',
-      layout: <Default />,
-      roles: ['any'],
-      children: [
-        {
-          path: '/excel',
-          element: <Excel />,
-        },
-      ],
-    },
-    {
       path: '/form-builder',
       layout: <Default />,
       roles: ['any'],
@@ -79,24 +66,13 @@ export const useInitRoutes = (): RouteInfo[] => {
       ],
     },
     {
-      path: '/tag-management',
-      layout: <Default />,
-      roles: ['any'],
-      children: [
-        {
-          path: '/tag-management',
-          element: <TagManagementList />,
-        },
-      ],
-    },
-    {
       path: '/demo-example',
       layout: <Default />,
       roles: ['any'],
       children: [
         {
           path: '/demo-example',
-          element: <S3Manager />,
+          element: <WebSocketComponent />,
         },
       ],
     },

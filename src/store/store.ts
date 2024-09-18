@@ -12,9 +12,6 @@ import {
 } from 'redux-persist'
 import commonStore from './commonStore/CommonStore'
 import formBuilderStore from './formBuilderPageStore/FormBuilderStore'
-import projectStore from './projectStore/ProjectStore'
-import tagManagementStore from './tagManagementStore/TagManagementStore'
-import demoEntityStore from './demoEntityStore/DemoEntityStore'
 
 const rootPersistConfig = {
   key: 'root',
@@ -24,9 +21,6 @@ const rootPersistConfig = {
 const rootReducer = combineReducers({
   commonStore: commonStore.reducer,
   formBuilderStore: formBuilderStore.reducer,
-  projectStore: projectStore.reducer,
-  tagManagementStore: tagManagementStore.reducer,
-  demoEntityStore: demoEntityStore.reducer,
 })
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer)

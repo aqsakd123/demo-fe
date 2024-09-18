@@ -52,13 +52,8 @@ export const linkItems: LinkItemsType[] = [
     disabled: true,
   },
   {
-    id: 3,
-    text: 'Tag Management',
-    link: '/tag-management',
-  },
-  {
     id: 4,
-    text: 'Demo Example',
+    text: 'Example',
     link: '/demo-example',
   },
 ]

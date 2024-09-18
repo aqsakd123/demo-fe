@@ -52,6 +52,10 @@ const QuillEditor: React.FC<MyEditorProps> = (props: MyEditorProps) => {
           flexDirection: 'column',
           border: readOnly ? '1px solid' : undefined,
         },
+        '& .ql-editor': {
+          minHeight: '200px',
+          maxHeight: '500px',
+        },
         '& .ql-toolbar': {
           flex: '0 0 auto',
           display: readOnly ? 'none' : undefined,

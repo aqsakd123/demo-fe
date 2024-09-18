@@ -22,7 +22,7 @@ type TextEditorFieldProps = {
 const TextEditorField: React.FC<TextEditorFieldProps> = ({
   id,
   name,
-  label = 'Markdown Editor',
+  label = '',
   value = '',
   onChange,
   previewMode = undefined,
