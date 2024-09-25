@@ -12,6 +12,7 @@ import {
 } from 'redux-persist'
 import commonStore from './commonStore/CommonStore'
 import formBuilderStore from './formBuilderPageStore/FormBuilderStore'
+import demoExampleStore from './demoExampleStore/DemoExampleStore'
 
 const rootPersistConfig = {
   key: 'root',
@@ -21,6 +22,7 @@ const rootPersistConfig = {
 const rootReducer = combineReducers({
   commonStore: commonStore.reducer,
   formBuilderStore: formBuilderStore.reducer,
+  demoExampleStore: demoExampleStore.reducer,
 })
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer)

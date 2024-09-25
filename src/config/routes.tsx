@@ -5,7 +5,8 @@ import E404 from '@app/pages/error/E404'
 import Home from '@app/pages/home/Home'
 import FormBuilder from '../pages/formBuilderPages/FormBuilderHome'
 import { useNavigate } from 'react-router-dom'
-import WebSocketComponent from '@app/pages/AwsAndSocketExample/WebSocketComponent'
+import DemoExampleList from '@app/pages/DemoExample/DemoExampleList'
+import DemoExampleFormContainer from '@app/pages/DemoExample/Dialog/DemoExampleFormContainer'
 
 export type RouteInfo = {
   path: string
@@ -20,9 +21,13 @@ export type RouteInfo = {
  */
 export const paths = {
   demoEntityListPath: '/demo-entity',
-  demoEntityAddPath: '/demo-entity/add/:id',
+  demoEntityAddPath: '/demo-entity/add',
   demoEntityEditPath: '/demo-entity/edit/:id',
   demoEntityDetailPath: '/demo-entity/detail/:id',
+  demoExampleListPath: '/demo-example',
+  demoExampleAddPath: '/demo-example/add',
+  demoExampleEditPath: '/demo-example/edit/:id',
+  demoExampleDetailPath: '/demo-example/detail/:id',
 }
 
 /**
@@ -66,13 +71,40 @@ export const useInitRoutes = (): RouteInfo[] => {
       ],
     },
     {
-      path: '/demo-example',
+      path: paths.demoExampleListPath,
       layout: <Default />,
       roles: ['any'],
       children: [
         {
-          path: '/demo-example',
-          element: <WebSocketComponent />,
+          path: paths.demoExampleListPath,
+          element: <DemoExampleList />,
+        },
+        {
+          path: paths.demoExampleDetailPath,
+          element: (
+            <DemoExampleFormContainer
+              mode='view'
+              onReturn={() => navigate(paths.demoExampleListPath)}
+            />
+          ),
+        },
+        {
+          path: paths.demoExampleEditPath,
+          element: (
+            <DemoExampleFormContainer
+              mode='edit'
+              onReturn={() => navigate(paths.demoExampleListPath)}
+            />
+          ),
+        },
+        {
+          path: paths.demoExampleAddPath,
+          element: (
+            <DemoExampleFormContainer
+              mode='add'
+              onReturn={() => navigate(paths.demoExampleListPath)}
+            />
+          ),
         },
       ],
     },

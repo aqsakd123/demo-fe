@@ -14,10 +14,13 @@ import {
   GridActionsCellItem,
 } from '@mui/x-data-grid'
 import styled from 'styled-components'
-import { Delete, Edit } from '@mui/icons-material'
+import { Delete, Edit, Visibility } from '@mui/icons-material'
+import { useSelector } from 'react-redux'
+import { RootState } from '@app/store/store'
 
 // eslint-disable-next-line no-empty-pattern
-const StyledGridOverlay = styled('div')(({}) => ({
+// @ts-ignore
+const StyledGridOverlay = styled('div')(({ darkMode }) => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
@@ -25,26 +28,31 @@ const StyledGridOverlay = styled('div')(({}) => ({
   height: '100%',
   minHeight: '200px',
   '& .ant-empty-img-1': {
-    fill: '#aeb8c2',
+    fill: darkMode ? '#4b5563' : '#aeb8c2',
   },
   '& .ant-empty-img-2': {
-    fill: '#f5f5f7',
+    fill: darkMode ? '#697688' : '#f5f5f7',
   },
   '& .ant-empty-img-3': {
-    fill: '#dce0e6',
+    fill: darkMode ? '#374151' : '#dce0e6',
   },
   '& .ant-empty-img-4': {
-    fill: '#fff',
+    fill: darkMode ? '#1a202c' : '#fff',
   },
   '& .ant-empty-img-5': {
     fillOpacity: '0.8',
-    fill: '#f5f5f5',
+    fill: darkMode ? '#4b5563' : '#f5f5f5',
   },
 }))
 
 function CustomNoRowsOverlay() {
+  const { darkMode } = useSelector((state: RootState) => state.commonStore)
+
   return (
-    <StyledGridOverlay>
+    <StyledGridOverlay
+      // @ts-ignore
+      darkMode={darkMode}
+    >
       <svg width='120' height='100px' viewBox='0 0 184 152' aria-hidden focusable='false'>
         <g fill='none' fillRule='evenodd'>
           <g transform='translate(24 31.67)'>
@@ -79,7 +87,8 @@ function CustomNoRowsOverlay() {
 
 const CustomToolbar: React.FC<DataGridProp> = (props: DataGridProp) => {
   const {
-    defaultGridToolbar = ['columns', 'density', 'export', 'filter', 'search'],
+    // defaultGridToolbar = ['columns', 'density', 'export', 'filter', 'search'],
+    defaultGridToolbar = [],
     customGridToolbar,
   } = props
 
@@ -106,9 +115,12 @@ export type CustomButton = 'custom'
 type DataGridProp = {
   columns: GridColDef<any>[]
   rows: GridRowsProp<any>
+  pageSize?: number
+  page?: number
   defaultGridToolbar?: GridToolBar[]
   customGridToolbar?: Array<{ name?: string; component: React.ReactNode | JSX.Element }>
   handleEdit?: (data: any) => void
+  handleDetail?: (data: any) => void
   handleDelete?: (data: any) => void
   selectCheckboxes?: boolean
 } & DataGridProps
@@ -118,12 +130,24 @@ const renderColumns = (props: DataGridProp) => {
   return columns
 }
 const DataGrid: React.FC<DataGridProp> = (props: DataGridProp) => {
-  const { rows, columns, selectCheckboxes, handleDelete, handleEdit } = props
+  const {
+    rows,
+    columns,
+    selectCheckboxes,
+    handleDelete,
+    handleEdit,
+    handleDetail,
+    pageSize,
+    page,
+    ...restProps
+  } = props
+
+  const { darkMode } = useSelector((state: RootState) => state.commonStore)
 
   const columnsField: GridColDef<any>[] = React.useMemo(() => {
     return columns.findIndex(
       (column) => column.field === 'action' && column.headerName === 'Actions',
-    ) === -1 && !(handleDelete && handleEdit)
+    ) === -1 && !(handleDelete || handleEdit || handleDetail)
       ? renderColumns(props)
       : renderColumns(props).concat([
           {
@@ -132,8 +156,21 @@ const DataGrid: React.FC<DataGridProp> = (props: DataGridProp) => {
             headerName: 'Actions',
             width: 100,
             cellClassName: 'actions',
+            pinnable: true,
             getActions: ({ row }) => {
               const actionList = []
+              if (handleDetail) {
+                actionList.push(
+                  <GridActionsCellItem
+                    icon={<Visibility />}
+                    label='Detail'
+                    className='textPrimary'
+                    // @ts-ignore
+                    onClick={() => handleDetail(row)}
+                    color='inherit'
+                  />,
+                )
+              }
               if (handleEdit) {
                 actionList.push(
                   <GridActionsCellItem
@@ -176,6 +213,9 @@ const DataGrid: React.FC<DataGridProp> = (props: DataGridProp) => {
         columns={columnsField}
         checkboxSelection={selectCheckboxes}
         disableRowSelectionOnClick
+        paginationModel={
+          pageSize || page ? { pageSize: pageSize ?? 25, page: page ?? 0 } : undefined
+        }
         sx={{
           boxShadow: 2,
           border: 2,
@@ -184,7 +224,7 @@ const DataGrid: React.FC<DataGridProp> = (props: DataGridProp) => {
             color: 'primary.main',
           },
           '& .MuiDataGrid-columnHeadersInner': {
-            backgroundColor: 'lightblue',
+            backgroundColor: darkMode ? '#2a2d64' : 'lightblue',
           },
           '& .MuiDataGrid-columnHeaderTitle': {
             fontWeight: 'bold',
@@ -196,6 +236,7 @@ const DataGrid: React.FC<DataGridProp> = (props: DataGridProp) => {
             color: '#111827',
           },
         }}
+        {...restProps}
       />
     </div>
   )
