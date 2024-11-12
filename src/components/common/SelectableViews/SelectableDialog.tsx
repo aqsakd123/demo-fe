@@ -17,6 +17,8 @@ import {
 import ColorUtils from '@app/helpers/ColorUtils'
 import { useConfirm } from '@app/components/common/ConfirmDialog/useConfirm'
 import { SelectableButtonProps } from './SelectableView'
+import { RootState } from '@app/store/store'
+import { useSelector } from 'react-redux'
 
 interface SelectableDialogProps extends SelectableButtonProps {
   open: boolean
@@ -29,10 +31,10 @@ const SelectableDialog: React.FC<SelectableDialogProps> = ({
   selectedValue,
   onChange,
   options,
-  defaultColor = 'blue',
 }) => {
   const confirm = useConfirm()
-
+  const { darkMode } = useSelector((state: RootState) => state.commonStore)
+  const defaultColor = darkMode ? '#0000ff' : '#52a0ef'
   const isArray = Array.isArray(selectedValue)
 
   const [localSelectedValues, setLocalSelectedValues] = useState<string[]>(
@@ -51,11 +53,11 @@ const SelectableDialog: React.FC<SelectableDialogProps> = ({
     }
   }
 
-  const isDifferent = (val1: string | string[], val2: string | string[]): boolean => {
+  const isDifferent = (val1: string | string[], val2?: string | string[]): boolean => {
     if (Array.isArray(val1) && Array.isArray(val2)) {
       return val1.length !== val2.length || val1.some((value) => !val2.includes(value))
     }
-    return val1 !== val2
+    return Array.isArray(val1) ? val1[0] !== val2 : val1 !== val2
   }
 
   const handleSave = () => {
@@ -92,7 +94,7 @@ const SelectableDialog: React.FC<SelectableDialogProps> = ({
                   color:
                     option.color ??
                     ColorUtils.getContrastingColor(option.backgroundColor ?? defaultColor),
-                  backgroundColor: option.backgroundColor,
+                  backgroundColor: option.backgroundColor ?? defaultColor,
                 }}
               >
                 <Checkbox
@@ -113,11 +115,12 @@ const SelectableDialog: React.FC<SelectableDialogProps> = ({
                         color:
                           option.color ??
                           ColorUtils.getContrastingColor(option.backgroundColor ?? defaultColor),
+                        backgroundColor: option.backgroundColor ?? defaultColor,
                       }}
                     />
                   }
                 />
-                <ListItemText primary={option.name} />
+                <ListItemText primary={option.label} />
               </ListItem>
             )
           })}

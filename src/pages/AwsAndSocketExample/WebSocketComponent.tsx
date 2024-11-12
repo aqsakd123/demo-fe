@@ -128,16 +128,6 @@ const WebSocketComponent: React.FC = () => {
 
   return (
     <div>
-      <QuillEditor value={userId} handleChange={(v) => setUserId(v)} />
-      <TextInputField
-        type='textarea'
-        rowsMin={3}
-        id='userId'
-        name='userId'
-        value={userId}
-        onChange={(v) => setUserId(v)}
-      />
-      <h1>Items</h1>
       <DragDropContext onDragEnd={onDragEnd}>
         <StrictModeDroppable droppableId='droppable'>
           {(provided) => (

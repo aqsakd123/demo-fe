@@ -166,7 +166,7 @@ export const themeSettings = (mode: 'dark' | 'light'): ThemeOptions => {
         ? {
             // palette values for dark mode
             primary: {
-              main: colors.primary[500],
+              main: colors.primary[100],
             },
             secondary: {
               main: colors.greenAccent[500],
@@ -183,7 +183,7 @@ export const themeSettings = (mode: 'dark' | 'light'): ThemeOptions => {
         : {
             // palette values for light mode
             primary: {
-              main: colors.primary[100],
+              main: colors.primary[500],
             },
             secondary: {
               main: colors.greenAccent[500],
@@ -236,6 +236,18 @@ export const themeSettings = (mode: 'dark' | 'light'): ThemeOptions => {
           },
         },
       },
+      MuiSwitch: {
+        styleOverrides: {
+          switchBase: {
+            '&.Mui-checked': {
+              color: colors.blueAccent[400],
+            },
+            '&.Mui-checked + .MuiSwitch-track': {
+              backgroundColor: colors.blueAccent[400],
+            },
+          },
+        },
+      },
       MuiButton: {
         styleOverrides: {
           root: {
@@ -252,7 +264,7 @@ export const themeSettings = (mode: 'dark' | 'light'): ThemeOptions => {
           text: {
             color: colors.grey[100],
             '&:hover': {
-              color: colors.blueAccent[500],
+              borderColor: colors.blueAccent[200],
             },
           },
           contained: {

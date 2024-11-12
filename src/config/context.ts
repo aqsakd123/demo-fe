@@ -1,7 +1,9 @@
 import { createContext } from 'react'
 
 export type UserType = {
-  role: string | undefined
+  roles: { id: number; code: string; roleName: string }[]
+  username: string
+  id: number
 }
 
 export type AppContextType = {

@@ -47,12 +47,16 @@ const Login = () => {
   const fetchData = async (username: string, password: string) => {
     dispatch(commonStore.actions.setLoading(true))
     setFailed(null)
-    if (username !== 'admin' && password !== 'admin') {
+    if (username && password) {
       await loginByUsernameAndPassword(username, password)
         .then(({ data }) => {
-          const { accessToken, refreshToken, userInfo } = data
-          saveUser(userInfo)
-          setJwtToken(accessToken)
+          const { token, refreshToken, username, id, roles } = data
+          saveUser({
+            username,
+            id,
+            roles,
+          })
+          setJwtToken(token)
           setRefreshToken(refreshToken)
           navigate('/')
         })
@@ -63,15 +67,16 @@ const Login = () => {
           }
         })
         .finally(() => dispatch(commonStore.actions.setLoading(false)))
-    } else {
-      saveUser({
-        role: 'admin',
-      })
-      setJwtToken('abcabc')
-      setRefreshToken('abcabc')
-      navigate('/')
-      dispatch(commonStore.actions.setLoading(false))
     }
+    // else {
+    //   saveUser({
+    //     role: 'admin',
+    //   })
+    //   setJwtToken('abcabc')
+    //   setRefreshToken('abcabc')
+    //   navigate('/')
+    //   dispatch(commonStore.actions.setLoading(false))
+    // }
   }
 
   const onSubmit = handleSubmit((data: any) => {

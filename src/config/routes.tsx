@@ -5,8 +5,9 @@ import E404 from '@app/pages/error/E404'
 import Home from '@app/pages/home/Home'
 import FormBuilder from '../pages/formBuilderPages/FormBuilderHome'
 import { useNavigate } from 'react-router-dom'
-import DemoExampleList from '@app/pages/DemoExample/DemoExampleList'
-import DemoExampleFormContainer from '@app/pages/DemoExample/Dialog/DemoExampleFormContainer'
+import DemoEntityExampleList from '@app/pages/DemoEntityExample/DemoEntityExampleList'
+import DemoEntityExampleFormContainer from '@app/pages/DemoEntityExample/Dialog/DemoEntityExampleFormContainer'
+import ChildDemoList from '@app/pages/ChildDemo/ChildDemoList'
 
 export type RouteInfo = {
   path: string
@@ -20,14 +21,11 @@ export type RouteInfo = {
  * Export constant for paths
  */
 export const paths = {
-  demoEntityListPath: '/demo-entity',
-  demoEntityAddPath: '/demo-entity/add',
-  demoEntityEditPath: '/demo-entity/edit/:id',
-  demoEntityDetailPath: '/demo-entity/detail/:id',
-  demoExampleListPath: '/demo-example',
-  demoExampleAddPath: '/demo-example/add',
-  demoExampleEditPath: '/demo-example/edit/:id',
-  demoExampleDetailPath: '/demo-example/detail/:id',
+  childDemoListPath: '/child-demo',
+  demoEntityExampleListPath: '/demo-entity-example',
+  demoEntityExampleAddPath: '/demo-entity-example/add',
+  demoEntityExampleEditPath: '/demo-entity-example/edit/:id',
+  demoEntityExampleDetailPath: '/demo-entity-example/detail/:id',
 }
 
 /**
@@ -71,40 +69,51 @@ export const useInitRoutes = (): RouteInfo[] => {
       ],
     },
     {
-      path: paths.demoExampleListPath,
+      path: paths.demoEntityExampleListPath,
       layout: <Default />,
       roles: ['any'],
       children: [
         {
-          path: paths.demoExampleListPath,
-          element: <DemoExampleList />,
+          path: paths.demoEntityExampleListPath,
+          element: <DemoEntityExampleList />,
         },
         {
-          path: paths.demoExampleDetailPath,
+          path: paths.demoEntityExampleDetailPath,
           element: (
-            <DemoExampleFormContainer
+            <DemoEntityExampleFormContainer
               mode='view'
-              onReturn={() => navigate(paths.demoExampleListPath)}
+              onReturn={() => navigate(paths.demoEntityExampleListPath)}
             />
           ),
         },
         {
-          path: paths.demoExampleEditPath,
+          path: paths.demoEntityExampleEditPath,
           element: (
-            <DemoExampleFormContainer
+            <DemoEntityExampleFormContainer
               mode='edit'
-              onReturn={() => navigate(paths.demoExampleListPath)}
+              onReturn={() => navigate(paths.demoEntityExampleListPath)}
             />
           ),
         },
         {
-          path: paths.demoExampleAddPath,
+          path: paths.demoEntityExampleAddPath,
           element: (
-            <DemoExampleFormContainer
+            <DemoEntityExampleFormContainer
               mode='add'
-              onReturn={() => navigate(paths.demoExampleListPath)}
+              onReturn={() => navigate(paths.demoEntityExampleListPath)}
             />
           ),
+        },
+      ],
+    },
+    {
+      path: paths.childDemoListPath,
+      layout: <Default />,
+      roles: ['any'],
+      children: [
+        {
+          path: paths.childDemoListPath,
+          element: <ChildDemoList />,
         },
       ],
     },

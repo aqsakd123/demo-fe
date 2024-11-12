@@ -5,6 +5,7 @@ import styled from '@emotion/styled'
 import { Drawer, List, ListItem, ListItemButton, ListItemText } from '@mui/material'
 import { useSelector } from 'react-redux'
 import { RootState } from '@app/store/store'
+import { paths } from '@app/config/routes'
 
 export const drawerWidth = 240
 type SidebarProps = {
@@ -53,8 +54,13 @@ export const linkItems: LinkItemsType[] = [
   },
   {
     id: 4,
-    text: 'Example',
-    link: '/demo-example',
+    text: 'Child Demo List',
+    link: '/child-demo',
+  },
+  {
+    id: 5,
+    text: 'Demo Entity Example',
+    link: '/demo-entity-example',
   },
 ]
 
