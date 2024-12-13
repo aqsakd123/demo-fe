@@ -1,0 +1,16 @@
+import { getJwtToken } from '@app/helpers/TokenStoreUtils'
+import axiosInstance from '../axios'
+
+export async function loginByUsernameAndPassword(username: string, password: string): Promise<any> {
+  return await axiosInstance.post('/auth/signIn', {
+    username,
+    password,
+  })
+}
+
+export async function postLogout(): Promise<any> {
+  const jwtToken = getJwtToken()
+  return await axiosInstance.post('/refresh', {
+    jwtToken,
+  })
+}
