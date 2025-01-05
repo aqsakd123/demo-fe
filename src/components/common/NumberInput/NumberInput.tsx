@@ -2,6 +2,7 @@ import React from 'react'
 import { TextField } from '@mui/material'
 import { Control, Controller } from 'react-hook-form'
 import { NumericFormat, NumericFormatProps } from 'react-number-format'
+import { MAX_INT_VALUE } from '@app/common/Contants'
 
 export type NumberInputFormProps = {
   name: string
@@ -21,6 +22,7 @@ const NumberInputForm: React.FC<NumberInputFormProps> = (props: NumberInputFormP
           <NumericFormat
             {...rest}
             customInput={TextField}
+            max={props.max ?? MAX_INT_VALUE}
             value={value}
             thousandSeparator
             onChange={(event) => {
@@ -43,6 +45,7 @@ const NumberInputForm: React.FC<NumberInputFormProps> = (props: NumberInputFormP
         customInput={TextField}
         thousandSeparator
         name={name}
+        max={props.max ?? MAX_INT_VALUE}
         onChange={(event) => {
           if (onChange) {
             onChange(parseFloat(event?.target.value))

@@ -24,3 +24,5 @@ export enum EALIGN {
 export const PAGE_SIZE_OPTIONS = [10, 30, 50, 100, 200]
 
 export const MAXIMUM_FILE_SIZE = 1024 * 20 //20Mb
+
+export const MAX_INT_VALUE = 2147483647
