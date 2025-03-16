@@ -6,6 +6,6 @@ export interface IBodyResponse {
 }
 
 export type PagingRequest = {
-  pageIndex: number
-  pageSize: number
+  pageIndex?: number
+  pageSize?: number
 }

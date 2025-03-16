@@ -5,6 +5,11 @@ import E404 from '@app/pages/error/E404'
 import Home from '@app/pages/home/Home'
 import FormBuilder from '../pages/FormGenerators/Component/FormBuilderHome'
 import { useNavigate } from 'react-router-dom'
+import MemoList from '@app/pages/memo/MemoList'
+import VideoItemList from '@app/pages/videoItem/VideoItemList'
+import VideoItemEdit from '@app/pages/videoItem/VideoItemEdit'
+import StoryList from '@app/pages/story/StoryItem'
+import LayoutForm from '@app/pages/CoGe/LayoutFormList'
 
 export type RouteInfo = {
   path: string
@@ -54,6 +59,62 @@ export const useInitRoutes = (): RouteInfo[] => {
         },
       ],
     },
+    {
+      path: '/memo',
+      layout: <Default />,
+      roles: ['any'],
+      children: [
+        {
+          path: '',
+          element: <MemoList />,
+        },
+      ],
+    },
+    {
+      path: '/layout-form',
+      layout: <Default />,
+      roles: ['any'],
+      children: [
+        {
+          path: '',
+          element: <LayoutForm />,
+        },
+      ],
+    },
+    {
+      path: '/video',
+      layout: <Default />,
+      roles: ['any'],
+      children: [
+        {
+          path: '',
+          element: <VideoItemList />,
+        },
+      ],
+    },
+    {
+      path: '/video/:id',
+      layout: <Default />,
+      roles: ['any'],
+      children: [
+        {
+          path: '/video/:id',
+          element: <VideoItemEdit />,
+        },
+      ],
+    },
+    {
+      path: '/story',
+      layout: <Default />,
+      roles: ['any'],
+      children: [
+        {
+          path: '',
+          element: <StoryList />,
+        },
+      ],
+    },
+
     {
       path: '/form-builder',
       layout: <Default />,

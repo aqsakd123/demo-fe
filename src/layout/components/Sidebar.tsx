@@ -49,6 +49,21 @@ export const linkItems: LinkItemsType[] = [
     text: 'Form Builder',
     link: '/form-builder',
   },
+  {
+    id: 1,
+    text: 'Memo',
+    link: '/memo',
+  },
+  // {
+  //   id: 3,
+  //   text: 'Layout Form',
+  //   link: '/layout-form',
+  // },
+  // {
+  //   id: 4,
+  //   text: 'Story',
+  //   link: '/story',
+  // },
 ]
 
 const Sidebar = (props: SidebarProps) => {

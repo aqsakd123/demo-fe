@@ -1,8 +1,5 @@
 import axiosInstance from '@app/api/axios'
-import TextEditorField from '@app/components/common/Editor/TextEditorField'
-import QuillEditor from '@app/components/common/QuillEditor/QuillEditor'
 import { StrictModeDroppable } from '@app/components/common/StrictModeDroppable/StrictModeDroppable'
-import TextInputField from '@app/components/common/TextInputField/TextInputField'
 import React, { useState, useEffect } from 'react'
 import { DragDropContext, Draggable, DropResult } from 'react-beautiful-dnd'
 

@@ -12,15 +12,21 @@ import {
 } from 'redux-persist'
 import commonStore from './commonStore/CommonStore'
 import formBuilderStore from './formBuilderPageStore/FormBuilderStore'
+import { memoStore } from './memoStore/memoStore'
+import { storyStore } from './memoStore/storyStore'
+import { layoutFormSlice } from './memoStore/layoutFormStore'
 
 const rootPersistConfig = {
   key: 'root',
   storage: storage,
-  whitelist: ['userReducer', 'commonStore'],
+  whitelist: ['userReducer', 'commonStore', 'memoStore', 'storyStore'],
 }
 const rootReducer = combineReducers({
   commonStore: commonStore.reducer,
   formBuilderStore: formBuilderStore.reducer,
+  memoStore: memoStore.reducer,
+  storyStore: storyStore.reducer,
+  layoutFormStore: layoutFormSlice.reducer,
 })
 
 const persistedReducer = persistReducer(rootPersistConfig, rootReducer)

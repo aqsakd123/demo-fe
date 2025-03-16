@@ -10,9 +10,9 @@ const buildElement = (e: RouteInfo) => {
   if (e.element) {
     return e.element
   }
-  if (e.roles && e.layout) {
-    return <PermissionCheck roles={e.roles} elementPass={e.layout} elementFail={<E403 />} />
-  }
+  // if (e.roles && e.layout) {
+  //   return <PermissionCheck roles={e.roles} elementPass={e.layout} elementFail={<E403 />} />
+  // }
   return e.layout
 }
 
